@@ -6,7 +6,7 @@ const Card = (props) => {
   const [result , setresult]=useState(null);
     async function get_data(){
             try{
-                const response = await fetch("http://127.0.0.1:8000/" + props.profile);
+                const response = await fetch("https://nextcontest-1.onrender.com/" + props.profile);
             
             const dat = await response.json();
             console.log(result)
