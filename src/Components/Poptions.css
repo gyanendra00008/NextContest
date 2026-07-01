@@ -1,0 +1,9 @@
+#optionName{
+    border: 2px solid black;
+    height: 100px;
+    width: 300px;
+    border: 8px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

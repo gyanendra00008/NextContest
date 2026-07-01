@@ -1,0 +1,23 @@
+table , td {
+    border: 1px solid black;
+
+}
+
+table {
+    color: white;
+    width: 700px;
+    row-gap: 0px;
+   
+
+}
+
+table , td , tr{
+     border-collapse: collapse;
+    border-spacing: 0;
+}
+
+tr{
+    height: 35px;
+
+}
+

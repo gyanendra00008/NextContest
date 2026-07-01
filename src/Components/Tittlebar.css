@@ -1,0 +1,43 @@
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+#header{
+    display: flex;
+    height: 70px;
+    width: 100%;
+    /* border: 2px solid red; */
+    justify-content: center;
+}
+
+#innerheader{
+    margin-top: 5px;
+            border: 2px solid black;
+            width: 80%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 2rem;
+            border-radius: 5px;
+            
+
+}
+#logodiv{
+    display: flex;
+    align-items: center;
+}
+#logoimg{
+    height: 100%;
+    border-radius: 30%;
+    width: 50px;
+}
+
+
+#aboutdiv{
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 2px;
+}
