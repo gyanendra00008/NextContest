@@ -61,3 +61,10 @@ async def func():
     contestlist= get_contests(10) 
     print("codeforces endpoint : Hitted ")
     return {"contest_list":contestlist}
+@app.get("/")
+async def home():
+    return {"status": "Backend Running 🚀"}
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
