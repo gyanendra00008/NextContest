@@ -6,12 +6,13 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 body{
-    background: linear-gradient(blue , violet, rgb(0, 13, 21));
+   background-color: rgb(87, 87, 255);
 }
 #Poptions {
     margin-top: 100px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 70px;
     
 
 }
@@ -19,12 +20,15 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 20px;
     margin-left: 150px;
+    font-size: 4rem;
 }
 
 
 #cardarea{
-            height: 1000px;
-            width: 70%;
+            height: auto;
+            width: auto;
+            padding-top: 30px;
+            padding-bottom: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,4 +38,7 @@ body{
             margin-right: 15%;
             margin-top: 50px;
             border-radius: 10px;
+            background-color: green;
+            border-color: azure;
+            overflow-x: hidden;
 }

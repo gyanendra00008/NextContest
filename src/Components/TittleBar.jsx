@@ -6,8 +6,7 @@ const TittleBar = () => {
           <div id="innerheader">
               <div id="logodiv"><img src="/Mylogo.png" alt="" id="logoimg" /></div>
               <div id="tittlediv"><h2>NextContest</h2></div>
-              <div id="aboutdiv"><h2>About</h2></div>
-
+              <div id="aboutdiv"><h2><a href="/">About</a></h2></div>
           </div>
     </div>
   )

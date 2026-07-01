@@ -5,14 +5,13 @@ table , td {
 
 table {
     color: white;
-    width: 700px;
-    row-gap: 0px;
-   
-
+    width: 100%;
+    margin: 5px;
+    
 }
 
 table , td , tr{
-     border-collapse: collapse;
+    border-collapse: collapse;
     border-spacing: 0;
 }
 

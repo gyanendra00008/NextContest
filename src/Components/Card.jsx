@@ -3,6 +3,16 @@ import { resume } from 'react-dom/server';
 import './Card.css'
 import { useState } from 'react';
 const Card = (props) => {
+  function convert(timestamp){
+    return new Date(timestamp*1000).toLocaleString("en-IN",{
+        day:"2-digit",
+        month:"short",
+        hour:"2-digit",
+        minute:"2-digit",
+    });
+  }
+
+
   const [result , setresult]=useState(null);
     async function get_data(){
             try{
@@ -53,18 +63,18 @@ const Card = (props) => {
 
      return (
     <div id='LC'>
-        <h1>Leetcode</h1>
+  
         <h2>Upcoming Contest...</h2>
     <div>
         <table>
           <tbody>
           <tr>
             <td>{data[0][0]}</td>
-            <td>{data[0][1]}</td>
+            <td>{convert(data[0][1])}</td>
           </tr>
           <tr>
             <td>{data[1][0]}</td>
-            <td>{data[1][1]}</td>
+            <td>{convert(data[1][1])}</td>
           </tr>
           </tbody>
         </table>
@@ -74,43 +84,13 @@ const Card = (props) => {
       <h2>Past Contest...</h2>
       <table>
         <tbody>
-          <tr>
-            <td>{data2[0][0]}</td>
-            <td>{data2[0][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[1][0]}</td>
-            <td>{data2[1][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[2][0]}</td>
-            <td>{data2[2][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[3][0]}</td>
-            <td>{data2[3][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[4][0]}</td>
-            <td>{data2[4][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[5][0]}</td>
-            <td>{data2[5][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[6][0]}</td>
-            <td>{data2[6][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[7][0]}</td>
-            <td>{data2[7][1]}</td>
-          </tr>
-          <tr>
-            <td>{data2[8][0]}</td>
-            <td>{data2[8][1]}</td>
-          </tr>
-        </tbody>
+         {data2.map((row, index) => (
+                      <tr key={index}>
+                      <td>{row[0]}</td>
+                      <td>{convert(row[1]*1000)}</td>
+                            </tr>
+                      ))}
+                    </tbody>
       </table>
 
 
@@ -124,71 +104,19 @@ const Card = (props) => {
     }
  return (
     <div id='CF'>
-      <h1>Codeforces</h1>
-      <h2>The Contests...</h2>
+    
+      
       <table>
         <tbody>
-          <tr>
-            <td>{data[0][0]}</td>
-            <td>{data[0][1]}</td>
-            <td>{data[0][2]}</td>
-            <td>{data[0][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[1][0]}</td>
-            <td>{data[1][1]}</td>
-            <td>{data[1][2]}</td>
-            <td>{data[1][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[2][0]}</td>
-            <td>{data[2][1]}</td>
-            <td>{data[2][2]}</td>
-            <td>{data[2][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[3][0]}</td>
-            <td>{data[3][1]}</td>
-            <td>{data[3][2]}</td>
-            <td>{data[3][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[4][0]}</td>
-            <td>{data[4][1]}</td>
-            <td>{data[4][2]}</td>
-            <td>{data[4][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[5][0]}</td>
-            <td>{data[5][1]}</td>
-            <td>{data[5][2]}</td>
-            <td>{data[5][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[6][0]}</td>
-            <td>{data[6][1]}</td>
-            <td>{data[6][2]}</td>
-            <td>{data[6][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[7][0]}</td>
-            <td>{data[7][1]}</td>
-            <td>{data[7][2]}</td>
-            <td>{data[7][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[8][0]}</td>
-            <td>{data[8][1]}</td>
-            <td>{data[8][2]}</td>
-            <td>{data[8][3]}</td>
-          </tr>
-          <tr>
-            <td>{data[9][0]}</td>
-            <td>{data[9][1]}</td>
-            <td>{data[9][2]}</td>
-            <td>{data[9][3]}</td>
-          </tr>
-        </tbody>
+         {data.map((row, index) => (
+                      <tr key={index}>
+                      <td>{row[0]}</td>
+                      <td>{row[1]}</td>
+                      <td>{row[2]}</td>
+                      <td>{convert(row[3]*1000)}</td>
+                            </tr>
+                      ))}
+                    </tbody>
       </table>
 
     
@@ -211,8 +139,8 @@ const Card = (props) => {
         }
  return (
     <div id='CC'>
-        <h1>Codechef..</h1>
-        <h2>The Contests ...</h2>
+        
+        
 
         <table>
           <thead>
@@ -223,32 +151,14 @@ const Card = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{data[0][0]}</td>
-              <td>{data[0][1]}</td>
-              <td>{data[0][2]}</td>
-            </tr>
-            <tr>
-              <td>{data[1][0]}</td>
-              <td>{data[1][1]}</td>
-              <td>{data[1][2]}</td>
-            </tr>
-            <tr>
-              <td>{data[2][0]}</td>
-              <td>{data[2][1]}</td>
-              <td>{data[2][2]}</td>
-            </tr>
-            <tr>
-              <td>{data[3][0]}</td>
-              <td>{data[3][1]}</td>
-              <td>{data[3][2]}</td>
-            </tr>
-            <tr>
-              <td>{data[4][0]}</td>
-              <td>{data[4][1]}</td>
-              <td>{data[4][2]}</td>
-            </tr>
-          </tbody>
+         {data.map((row, index) => (
+                      <tr key={index}>
+                      <td>{row[0]}</td>
+                      <td>{row[1]}</td>
+                      <td>{row[2]}</td>
+                      </tr>
+                      ))}
+                    </tbody>
         </table>
 
 

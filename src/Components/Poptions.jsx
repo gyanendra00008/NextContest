@@ -8,7 +8,7 @@ const Poptions = (props) => {
   }
   return (
     <>
-    <div id='optionName' onClick={handle_clickk}><h1>{props.name}</h1>
+    <div id='optionName' onClick={handle_clickk} ><h1>{props.name}</h1>
     </div>
     </>
   )
