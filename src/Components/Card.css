@@ -5,20 +5,35 @@ table , td {
 
 table {
     color: white;
-    width: 100%;
+    width: 95%;
     margin: 5px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px ;
     
 }
 
-table , td , tr{
-    border-collapse: collapse;
-    border-spacing: 0;
+thead{
+    background: #2563eb;
+    color: white;
 }
 
+tbody tr:nth-child(even) {
+    background-color: #646201;
+
+}
+tbody tr:hover {
+        background-color: #012944;
+        transition: 0.2s;
+}
 tr{
     height: 35px;
 
 }
+
+td, th {
+    padding: 8px 8px;
+}
+
 .gotothere{
     margin-top: 30px;
     display: flex;
@@ -32,4 +47,8 @@ tr{
     border-radius: 20px;
 }
 
+#LC ,#CF , #CC {
+    overflow-x: auto;
+
+}
 

@@ -6,20 +6,11 @@ import { useEffect, useRef } from 'react'
 import { useState } from 'react'
 import Footer from './Components/Footer'
 function App(){
-
+  
   const [profile , setprofile]=useState('Leetcode');
 
 
-  function handle_color(){
-  if(profile=='Leetcode'){
-      
-    
-  }else if(profile=='Codeforces'){
-
-  }else if(profile=='Codechef'){
-
-  }
-  }
+  
   function scroll() {
   document.getElementById("cardarea").scrollIntoView({
     behavior: "smooth"
@@ -30,13 +21,13 @@ function App(){
    <TittleBar tittle={"secretpage"}/>
    <div id="prevdiv">
     <h1 id='line'>All Your Contest info in one place...</h1>
-    <h1 id="sline">
+    <div id="sline">
     <h1>Supported: </h1>
     <h2><ul>
-    <li>Leetcode</li>
-    <li>Codeforces</li>
-    <li>Codechef</li>
-    </ul> </h2></h1>
+    <li>🟡 Leetcode</li>
+    <li>🟢 Codeforces</li>
+    <li>🔴 Codechef</li>
+    </ul> </h2></div>
    </div>
    <h1 id='scrolldownline' href='#cardarea' onClick={scroll} >Scroll Down ⏬ </h1>
    

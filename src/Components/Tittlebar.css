@@ -9,6 +9,7 @@
     height: 80px;
     width: 100%;
     justify-content: center;
+    /* overflow-x: auto; */
 }
 
 #innerheader{
@@ -25,6 +26,7 @@
             font-size: 1.7rem;
             border-radius: 10px;
             gap: 250px;
+            overflow-x: auto;
 }
 #logodiv{
     margin-left: 10px;
@@ -42,4 +44,9 @@
     font-weight: 700;
     font-size: 5rem;
     color: white;
+}
+@media (max-width:1000px){
+        #innerheader {
+            gap: 10%;
+        }
 }

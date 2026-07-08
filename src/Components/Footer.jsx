@@ -14,7 +14,7 @@ const Footer = () => {
               </div>
 
 <h2>© 2026 NextContest. All rights reserved.</h2>
-<h2>Made with ❤️ by Gyanendra Kumar</h2>
+{/* <h2>Made with ❤️ by Gyanendra Kumar</h2> */}
     </div>
   )
 }

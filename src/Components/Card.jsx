@@ -19,7 +19,7 @@ const Card = (props) => {
                 const response = await fetch("https://nextcontest-1.onrender.com/" + props.profile);
             
             const dat = await response.json();
-            console.log(result)
+            // console.log(result)
             setresult(dat);
             }catch(e){
                 console.log(e);
@@ -30,7 +30,7 @@ const Card = (props) => {
     useEffect(() => {
       setresult(null);
       get_data();
-      console.log("fetching..........",props.profile);
+      // console.log("fetching..........",props.profile);
     }, [props.profile]);
     if(!result){
       return <div>Loading.....</div>
@@ -64,9 +64,15 @@ const Card = (props) => {
      return (
     <div id='LC'>
   
-        <h2>Upcoming Contest...</h2>
-    <div>
+        <h2>🔜 Upcoming Contest...</h2>
+    
         <table>
+          <thead>
+            <tr>
+              <td>Contest Name</td>
+              <td>Contest Time</td>
+            </tr>
+          </thead>
           <tbody>
           <tr>
             <td>{data[0][0]}</td>
@@ -78,11 +84,17 @@ const Card = (props) => {
           </tr>
           </tbody>
         </table>
-    </div>
+    
         <br />
         
-      <h2>Past Contest...</h2>
+      <h2>☑️ Past Contest...</h2>
       <table>
+        <thead>
+            <tr>
+              <td>Contest Name</td>
+              <td>Contest Time</td>
+            </tr>
+          </thead>
         <tbody>
          {data2.map((row, index) => (
                       <tr key={index}>
@@ -92,7 +104,7 @@ const Card = (props) => {
                       ))}
                     </tbody>
       </table>
-      <div className="gotothere"><a href="https://leetcode.com/contest/">GO to The {props.profile}</a></div>
+      <div className="gotothere"><a href="https://leetcode.com/contest/">Go to  {props.profile}</a></div>
 
 
     </div>
@@ -108,6 +120,13 @@ const Card = (props) => {
     
       
       <table>
+        <thead>
+          <tr>
+            <td>Contest Name</td>
+            <td>Status</td>
+            <td>Contest Time</td>
+          </tr>
+        </thead>
         <tbody>
          {data.map((row, index) => (
                       <tr key={index}>
@@ -122,7 +141,7 @@ const Card = (props) => {
 
     
     
-          <div className="gotothere"><a href="https://codeforces.com/contests">GO to The {props.profile}</a></div>
+          <div className="gotothere"><a href="https://codeforces.com/contests">Go to  {props.profile}</a></div>
 
     </div>
   )
@@ -163,7 +182,7 @@ const Card = (props) => {
                     </tbody>
         </table>
         
-                  <div className="gotothere"><a href="https://www.codechef.com/contests">GO to The {props.profile}</a></div>
+                  <div className="gotothere"><a href="https://www.codechef.com/contests">Go to  {props.profile}</a></div>
 
 
 

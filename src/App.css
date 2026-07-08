@@ -114,3 +114,32 @@ body{
         cursor: pointer;
 }
 
+
+#cardui , #cardarea{
+    overflow-x: auto;
+}
+
+@media (max-width:800px) {
+    #Poptions {
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 20%;
+        overflow-x: auto;
+    }
+    #prevdiv{
+        flex-direction: column;
+        gap: 10px;
+    }
+   
+    #sline{
+        margin-top: 10px;
+    }
+    
+}
+@media (max-width:1200px){
+    #prevdiv{
+        flex-direction: column;
+        gap: 50px;
+    }
+    
+}
