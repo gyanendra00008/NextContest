@@ -92,6 +92,7 @@ const Card = (props) => {
                       ))}
                     </tbody>
       </table>
+      <div className="gotothere"><a href="https://leetcode.com/contest/">GO to The {props.profile}</a></div>
 
 
     </div>
@@ -121,7 +122,8 @@ const Card = (props) => {
 
     
     
-  
+          <div className="gotothere"><a href="https://codeforces.com/contests">GO to The {props.profile}</a></div>
+
     </div>
   )
     }else if(props.profile=='Codechef'){
@@ -160,6 +162,9 @@ const Card = (props) => {
                       ))}
                     </tbody>
         </table>
+        
+                  <div className="gotothere"><a href="https://www.codechef.com/contests">GO to The {props.profile}</a></div>
+
 
 
 

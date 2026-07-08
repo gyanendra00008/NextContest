@@ -13,6 +13,7 @@
 #optionName:hover{
         background-color: blue;
         transform: scale(1.03);
+        cursor: pointer;
 }
 
 

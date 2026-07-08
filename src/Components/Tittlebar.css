@@ -6,26 +6,28 @@
 }
 #header{
     display: flex;
-    height: 70px;
+    height: 80px;
     width: 100%;
-    /* border: 2px solid red; */
     justify-content: center;
 }
 
 #innerheader{
     margin-top: 5px;
-            border: 2px solid black;
+            /* border: 7px solid rgb(23, 1, 120); */
+            background-color: black;
+            border: 2px solid white;
+
             width: 80%;
             height: 100%;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
             align-items: center;
-            font-size: 2rem;
-            border-radius: 5px;
-            
-
+            font-size: 1.7rem;
+            border-radius: 10px;
+            gap: 250px;
 }
 #logodiv{
+    margin-left: 10px;
     display: flex;
     align-items: center;
 }
@@ -34,10 +36,8 @@
     border-radius: 30%;
     width: 50px;
 }
-
-
-#aboutdiv{
-    border: 2px solid black;
-    border-radius: 5px;
-    padding: 2px;
+#headingmain{
+    font-weight: 700;
+    font-size: 5rem;
+    color: white;
 }

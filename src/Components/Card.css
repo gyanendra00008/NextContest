@@ -19,4 +19,17 @@ tr{
     height: 35px;
 
 }
+.gotothere{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+
+    height: 100px;
+    background-color: #ff0000;
+    border: 5px solid yellow;
+    border-radius: 20px;
+}
+
 
