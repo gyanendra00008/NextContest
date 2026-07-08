@@ -113,7 +113,7 @@ const Card = (props) => {
                       <tr key={index}>
                       <td>{row[0]}</td>
                       <td>{row[1]}</td>
-                      <td>{row[2]}</td>
+                      {/* <td>{row[2]}</td> */}
                       <td>{convert(row[3]*1000)}</td>
                             </tr>
                       ))}
@@ -157,7 +157,7 @@ const Card = (props) => {
                       <tr key={index}>
                       <td>{row[0]}</td>
                       <td>{row[1]}</td>
-                      <td>{row[2]}</td>
+                      <td>{row[2]} mins</td>
                       </tr>
                       ))}
                     </tbody>
