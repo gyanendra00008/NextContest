@@ -30,11 +30,13 @@
     margin-left: 10px;
     display: flex;
     align-items: center;
+    /* border: 2px solid white; */
+    /* border-radius: 5; */
 }
 #logoimg{
     height: 100%;
     border-radius: 30%;
-    width: 50px;
+    width: 70px;
 }
 #headingmain{
     font-weight: 700;
