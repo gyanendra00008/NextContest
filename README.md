@@ -62,7 +62,7 @@ The-Next-Contest/
 ```bash
 git clone
 
-https://github.com/gyanendra00008/the-next-contest.git
+https://github.com/gyanendra00008/nextcontest.git
 ```
 
 ---
