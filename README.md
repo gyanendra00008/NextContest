@@ -60,7 +60,9 @@ The-Next-Contest/
 ### Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/the-next-contest.git
+git clone
+
+https://github.com/gyanendra00008/the-next-contest.git
 ```
 
 ---
@@ -97,11 +99,6 @@ http://localhost:5173
 
 ---
 
-##  Screenshots
-
-> Screenshots will be added soon.
-
----
 
 ## 🎯 Future Improvements
 
