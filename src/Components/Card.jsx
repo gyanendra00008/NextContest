@@ -1,197 +1,98 @@
-import React, { useEffect } from 'react'
-import { resume } from 'react-dom/server';
-import './Card.css'
-import { useState } from 'react';
-const Card = (props) => {
-  function convert(timestamp){
-    return new Date(timestamp*1000).toLocaleString("en-IN",{
-        day:"2-digit",
-        month:"short",
-        hour:"2-digit",
-        minute:"2-digit",
-    });
+import './Card.css';
+import ContestCard from './ContestCard';
+import ContestTable from './ContestTable';
+import { AlertCircle, RefreshCw, CalendarSearch } from 'lucide-react';
+
+const Card = ({
+  contests = [],
+  loading = false,
+  error = null,
+  viewMode = 'grid',
+  onRetry,
+  activeStatus = 'upcoming',
+  searchQuery = '',
+  platform = 'All'
+}) => {
+  // Loading Skeletons
+  if (loading) {
+    return (
+      <div className="contest-loading-container">
+        <div className="loading-spinner-wrapper">
+          <RefreshCw className="loading-spin-icon" size={32} />
+          <p className="loading-text">Fetching latest contest schedules...</p>
+          <span className="loading-subtext">Connecting to LeetCode, Codeforces & CodeChef APIs</span>
+        </div>
+        <div className="skeleton-grid">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <div key={n} className="skeleton-card">
+              <div className="skeleton-line skeleton-header"></div>
+              <div className="skeleton-line skeleton-title"></div>
+              <div className="skeleton-line skeleton-box"></div>
+              <div className="skeleton-line skeleton-detail"></div>
+              <div className="skeleton-line skeleton-actions"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
+  // Error State
+  if (error) {
+    return (
+      <div className="contest-error-container">
+        <div className="error-card">
+          <AlertCircle size={44} className="error-icon" />
+          <h3 className="error-title">Unable to Load Contests</h3>
+          <p className="error-message">{error}</p>
+          {onRetry && (
+            <button className="error-retry-btn" onClick={onRetry}>
+              <RefreshCw size={16} />
+              <span>Retry Connection</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
-  const [result , setresult]=useState(null);
-    async function get_data(){
-            try{
-                const response = await fetch("https://nextcontest-1.onrender.com/" + props.profile);
-            
-            const dat = await response.json();
-            // console.log(result)
-            setresult(dat);
-            }catch(e){
-                console.log(e);
-                console.log("Anything is wrong here");
+  // Empty State (No contests match filter or search)
+  if (contests.length === 0) {
+    return (
+      <div className="contest-empty-container">
+        <div className="empty-card">
+          <CalendarSearch size={48} className="empty-icon" />
+          <h3 className="empty-title">No Contests Found</h3>
+          <p className="empty-description">
+            {searchQuery
+              ? `No contests matching "${searchQuery}" in ${platform} (${activeStatus}).`
+              : `There are currently no ${activeStatus} contests listed for ${platform}.`}
+          </p>
+          {onRetry && (
+            <button className="empty-refresh-btn" onClick={onRetry}>
+              <RefreshCw size={15} />
+              <span>Check for Updates</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
-            }
-    }
-    useEffect(() => {
-      setresult(null);
-      get_data();
-      // console.log("fetching..........",props.profile);
-    }, [props.profile]);
-    if(!result){
-      return <div>Loading.....</div>
-    }
-    if(props.profile=='Leetcode'){
-       if (!result?.upcoming_contest?.data?.contestV2UpcomingContests) {
-        return <div>Loading...</div>;
-    }
-      let data= [];
-          for(let i=0 ; i<2; i++){
-                let info=[];
-                let obj = result.upcoming_contest.data.contestV2UpcomingContests[i];
-                info.push(obj.title);
-                info.push(obj.startTime);
-                data.push(info);
-          }
-
-      
-       if (!result?.past_contest?.data?.contestV2HistoryContests.contests) {
-        return <div>Loading...</div>;
-    }
-      let data2= [];
-          for(let i=0 ; i<9; i++){
-                let info=[];
-                let obj = result.past_contest.data.contestV2HistoryContests.contests[i];
-                info.push(obj.title);
-                info.push(obj.startTime);
-                data2.push(info);
-          }
-
-     return (
-    <div id='LC'>
-  
-        <h2>🔜 Upcoming Contest...</h2>
-    
-        <table>
-          <thead>
-            <tr>
-              <td>Contest Name</td>
-              <td>Contest Time</td>
-            </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>{data[0][0]}</td>
-            <td>{convert(data[0][1])}</td>
-          </tr>
-          <tr>
-            <td>{data[1][0]}</td>
-            <td>{convert(data[1][1])}</td>
-          </tr>
-          </tbody>
-        </table>
-    
-        <br />
-        
-      <h2>☑️ Past Contest...</h2>
-      <table>
-        <thead>
-            <tr>
-              <td>Contest Name</td>
-              <td>Contest Time</td>
-            </tr>
-          </thead>
-        <tbody>
-         {data2.map((row, index) => (
-                      <tr key={index}>
-                      <td>{row[0]}</td>
-                      <td>{convert(row[1]*1000)}</td>
-                            </tr>
-                      ))}
-                    </tbody>
-      </table>
-      <div className="gotothere"><a href="https://leetcode.com/contest/">Go to  {props.profile}</a></div>
-
-
+  // Render Grid or Table view
+  return (
+    <div className="contests-display-area">
+      {viewMode === 'grid' ? (
+        <div className="contest-cards-grid">
+          {contests.map((contest, index) => (
+            <ContestCard key={contest.id || index} contest={contest} />
+          ))}
+        </div>
+      ) : (
+        <ContestTable contests={contests} />
+      )}
     </div>
-  )
-        
-    }else if(props.profile =='Codeforces'){
-      let data = result.contest_list;
-      if (!data){
-        return <div>Loading...</div>;
-    }
- return (
-    <div id='CF'>
-    
-      
-      <table>
-        <thead>
-          <tr>
-            <td>Contest Name</td>
-            <td>Status</td>
-            <td>Contest Time</td>
-          </tr>
-        </thead>
-        <tbody>
-         {data.map((row, index) => (
-                      <tr key={index}>
-                      <td>{row[0]}</td>
-                      <td>{row[1]}</td>
-                      {/* <td>{row[2]}</td> */}
-                      <td>{convert(row[3]*1000)}</td>
-                            </tr>
-                      ))}
-                    </tbody>
-      </table>
+  );
+};
 
-    
-    
-          <div className="gotothere"><a href="https://codeforces.com/contests">Go to  {props.profile}</a></div>
-
-    </div>
-  )
-    }else if(props.profile=='Codechef'){
-        let obj=result.data;
-
-        if(!obj){
-          return <div>Loading...</div>
-        }
-        let data = [];
-        for(let i=0 ; i< obj.length ; i++){
-            let name  = obj[i].contest_name;
-            let date = obj[i].contest_start_date;
-            let duration = obj[i].contest_duration;
-            data.push([name , date, duration]);
-        }
- return (
-    <div id='CC'>
-        
-        
-
-        <table>
-          <thead>
-            <tr>
-            <td><h3>Contest Name </h3></td>
-            <td><h3>Contest Time</h3></td>
-            <td><h3>Duration</h3></td>
-            </tr>
-          </thead>
-          <tbody>
-         {data.map((row, index) => (
-                      <tr key={index}>
-                      <td>{row[0]}</td>
-                      <td>{row[1]}</td>
-                      <td>{row[2]} mins</td>
-                      </tr>
-                      ))}
-                    </tbody>
-        </table>
-        
-                  <div className="gotothere"><a href="https://www.codechef.com/contests">Go to  {props.profile}</a></div>
-
-
-
-
-
-    </div>
-
-  )
-    }
-}
-
-export default Card
+export default Card;

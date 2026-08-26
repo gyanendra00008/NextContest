@@ -1,0 +1,298 @@
+.contest-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.35rem;
+  backdrop-filter: blur(14px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+
+.contest-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--border-color);
+  transition: all 0.25s ease;
+}
+
+.contest-card:hover {
+  transform: translateY(-4px);
+  background: var(--bg-card-hover);
+  border-color: var(--border-color-hover);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Platform Accent Bars */
+.contest-card.leetcode::before {
+  background: var(--leetcode-gradient);
+}
+.contest-card.leetcode:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.contest-card.codeforces::before {
+  background: var(--codeforces-gradient);
+}
+.contest-card.codeforces:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.contest-card.codechef::before {
+  background: var(--codechef-gradient);
+}
+.contest-card.codechef:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.contest-card.is-live {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
+}
+.contest-card.is-live::before {
+  background: linear-gradient(90deg, #ef4444, #f97316);
+}
+
+.contest-card.is-past {
+  opacity: 0.85;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.platform-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.platform-pill.leetcode {
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.platform-pill.codeforces {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.25);
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.platform-pill.codechef {
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.25);
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.platform-icon {
+  font-size: 0.85rem;
+}
+
+/* Status Chips */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+.status-chip.live {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.live-dot-pulse {
+  width: 6px;
+  height: 6px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ef4444;
+  animation: live-pulse 1.5s infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.4; }
+}
+
+.status-chip.upcoming {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.status-chip.past {
+  background: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+/* Title */
+.card-title-section {
+  margin-bottom: 0.85rem;
+}
+
+.contest-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #f8fafc;
+}
+
+.contest-title-link {
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.contest-title-link:hover {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
+/* Countdown Box */
+.countdown-box {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.countdown-box.live-box {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.countdown-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.2rem;
+}
+
+.countdown-value {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.3px;
+}
+
+.live-box .countdown-value {
+  color: #f87171;
+}
+
+/* Details Grid */
+.card-details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.detail-icon {
+  color: var(--text-muted);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.detail-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* Actions */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.action-btn.calendar-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  flex: 1;
+}
+
+.action-btn.calendar-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
+.action-btn.primary-btn {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  border: none;
+  flex: 1;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.action-btn.primary-btn:hover {
+  opacity: 0.92;
+  transform: scale(1.02);
+}

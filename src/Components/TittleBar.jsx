@@ -1,15 +1,14 @@
-import React from 'react'
-import './Tittlebar.css'
+import './Tittlebar.css';
+
 const TittleBar = () => {
   return (
     <div id='header'>
-          <div id="innerheader">
-              <div id="logodiv"><img src="/Mylogo.png" alt="" id="logoimg" /></div>
-              <div id="tittlediv"><h2 id='headingmain'>NextContest</h2></div>
-              
-          </div>
+      <div id="innerheader">
+        <div id="logodiv"><img src="/Mylogo.png" alt="NextContest" id="logoimg" /></div>
+        <div id="tittlediv"><h2 id='headingmain'>NextContest</h2></div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default TittleBar
+export default TittleBar;
