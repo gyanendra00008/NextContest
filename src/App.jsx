@@ -45,21 +45,44 @@ function App() {
     }
   }, [activePlatform]);
 
+  // Handle platform switch with immediate circular loading state
+  const handleSelectPlatform = useCallback((platformId) => {
+    setActivePlatform((prev) => {
+      if (prev === platformId) return prev;
+      setLoading(true);
+      return platformId;
+    });
+  }, []);
+
   useEffect(() => {
     let ignore = false;
     
     const fetchData = async () => {
-      try {
-        const fullData = await fetchAllPlatforms();
-        if (ignore) return;
-        setAllPlatformData(fullData);
+      const startTime = Date.now();
+      setError(null);
 
+      try {
         if (activePlatform === 'All') {
+          const fullData = await fetchAllPlatforms();
+          if (ignore) return;
+          setAllPlatformData(fullData);
           setData(fullData);
         } else {
+          // Fetch selected platform data
           const platformData = await fetchPlatformData(activePlatform);
           if (ignore) return;
           setData(platformData);
+
+          // Update full platform counts in background
+          fetchAllPlatforms().then(fullData => {
+            if (!ignore && fullData) setAllPlatformData(fullData);
+          }).catch(() => {});
+        }
+
+        // Smooth UX: allow circle animation to render gracefully (min 250ms)
+        const elapsed = Date.now() - startTime;
+        if (elapsed < 250) {
+          await new Promise(r => setTimeout(r, 250 - elapsed));
         }
       } catch (err) {
         if (ignore) return;
@@ -150,7 +173,7 @@ function App() {
         <div id="contests-main-view">
           <PlatformSelector
             activePlatform={activePlatform}
-            setActivePlatform={setActivePlatform}
+            setActivePlatform={handleSelectPlatform}
             activeStatus={activeStatus}
             setActiveStatus={setActiveStatus}
             searchQuery={searchQuery}

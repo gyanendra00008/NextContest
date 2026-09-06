@@ -3,6 +3,14 @@ import ContestCard from './ContestCard';
 import ContestTable from './ContestTable';
 import { AlertCircle, RefreshCw, CalendarSearch } from 'lucide-react';
 
+const PLATFORM_LABELS = {
+  All: 'All Platforms',
+  Leetcode: 'LeetCode',
+  Codeforces: 'Codeforces',
+  Codechef: 'CodeChef',
+  Atcoder: 'AtCoder'
+};
+
 const Card = ({
   contests = [],
   loading = false,
@@ -13,14 +21,39 @@ const Card = ({
   searchQuery = '',
   platform = 'All'
 }) => {
-  // Loading Skeletons
+  const platformName = PLATFORM_LABELS[platform] || platform;
+  const platformClass = platform?.toLowerCase() || 'all';
+
+  // Circular Loading State
   if (loading) {
     return (
       <div className="contest-loading-container">
-        <div className="loading-spinner-wrapper">
-          <RefreshCw className="loading-spin-icon" size={32} />
-          <p className="loading-text">Fetching latest contest schedules...</p>
-          <span className="loading-subtext">Connecting to LeetCode, Codeforces, CodeChef & AtCoder APIs</span>
+        <div className={`circular-loader-wrapper ${platformClass}`}>
+          <div className="circle-spinner-ring">
+            <svg className="circular-spinner-svg" viewBox="0 0 50 50">
+              <circle
+                className="spinner-circle-bg"
+                cx="25"
+                cy="25"
+                r="20"
+                fill="none"
+                strokeWidth="4"
+              />
+              <circle
+                className="spinner-circle-path"
+                cx="25"
+                cy="25"
+                r="20"
+                fill="none"
+                strokeWidth="4"
+              />
+            </svg>
+            <div className="spinner-center-dot"></div>
+          </div>
+          <div className="loading-text-group">
+            <p className="loading-text">Loading {platformName} Contests...</p>
+            <span className="loading-subtext">Fetching real-time contest schedules</span>
+          </div>
         </div>
         <div className="skeleton-grid">
           {[1, 2, 3, 4, 5, 6].map((n) => (
