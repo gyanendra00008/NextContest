@@ -35,6 +35,9 @@ const Footer = () => {
               <a href="https://www.codechef.com/contests" target="_blank" rel="noopener noreferrer">
                 🔴 CodeChef Contests
               </a>
+              <a href="https://atcoder.jp/contests" target="_blank" rel="noopener noreferrer">
+                ⚫ AtCoder Contests
+              </a>
             </div>
           </div>
 

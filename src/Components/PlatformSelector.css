@@ -68,6 +68,11 @@
   box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
 }
 
+.platform-tab-btn.active.atcoder {
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+}
+
 .platform-tab-icon {
   font-size: 1.1rem;
 }

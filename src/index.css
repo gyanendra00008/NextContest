@@ -30,6 +30,8 @@
   --codeforces-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
   --codechef-color: #a855f7;
   --codechef-gradient: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  --atcoder-color: #10b981;
+  --atcoder-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
 
   --live-color: #ef4444;
   --upcoming-color: #10b981;

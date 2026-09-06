@@ -23,6 +23,11 @@ const PLATFORM_CONFIG = {
     badgeClass: 'codechef',
     icon: '🔴',
     color: '#a855f7',
+  },
+  AtCoder: {
+    badgeClass: 'atcoder',
+    icon: '⚫',
+    color: '#10b981',
   }
 };
 

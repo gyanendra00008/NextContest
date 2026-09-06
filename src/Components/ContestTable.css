@@ -80,6 +80,12 @@
   background: rgba(168, 85, 247, 0.1);
 }
 
+.table-platform-pill.atcoder {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.1);
+}
+
 .table-contest-name {
   font-weight: 600;
   color: #f1f5f9;

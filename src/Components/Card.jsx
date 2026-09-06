@@ -20,7 +20,7 @@ const Card = ({
         <div className="loading-spinner-wrapper">
           <RefreshCw className="loading-spin-icon" size={32} />
           <p className="loading-text">Fetching latest contest schedules...</p>
-          <span className="loading-subtext">Connecting to LeetCode, Codeforces & CodeChef APIs</span>
+          <span className="loading-subtext">Connecting to LeetCode, Codeforces, CodeChef & AtCoder APIs</span>
         </div>
         <div className="skeleton-grid">
           {[1, 2, 3, 4, 5, 6].map((n) => (

@@ -3,3 +3,4 @@ uvicorn
 requests
 httpx
 python-dotenv
+beautifulsoup4

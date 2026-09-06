@@ -53,6 +53,13 @@
   border-color: rgba(168, 85, 247, 0.3);
 }
 
+.contest-card.atcoder::before {
+  background: var(--atcoder-gradient);
+}
+.contest-card.atcoder:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
 .contest-card.is-live {
   border-color: rgba(239, 68, 68, 0.4);
   box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
@@ -102,6 +109,12 @@
   color: #c084fc;
   border-color: rgba(168, 85, 247, 0.25);
   background: rgba(168, 85, 247, 0.1);
+}
+
+.platform-pill.atcoder {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.1);
 }
 
 .platform-icon {

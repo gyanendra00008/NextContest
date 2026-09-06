@@ -87,6 +87,7 @@ function App() {
     const lcCount = (allPlatformData.upcoming || []).filter(c => c.platform === 'LeetCode').length;
     const cfCount = (allPlatformData.upcoming || []).filter(c => c.platform === 'Codeforces').length;
     const ccCount = (allPlatformData.upcoming || []).filter(c => c.platform === 'CodeChef').length;
+    const atCount = (allPlatformData.upcoming || []).filter(c => c.platform === 'AtCoder').length;
 
     // Platform-specific status counts
     const currentList = activePlatform === 'All' ? allPlatformData : data;
@@ -99,6 +100,7 @@ function App() {
       Leetcode: lcCount,
       Codeforces: cfCount,
       Codechef: ccCount,
+      Atcoder: atCount,
       upcoming: upcomingForPlatform,
       live: liveForPlatform,
       past: pastForPlatform,

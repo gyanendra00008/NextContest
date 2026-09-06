@@ -6,6 +6,7 @@ const PLATFORMS = [
   { id: 'Leetcode', name: 'LeetCode', icon: '🟡', color: '#f59e0b' },
   { id: 'Codeforces', name: 'Codeforces', icon: '🟢', color: '#38bdf8' },
   { id: 'Codechef', name: 'CodeChef', icon: '🔴', color: '#a855f7' },
+  { id: 'Atcoder', name: 'AtCoder', icon: '⚫', color: '#10b981' },
 ];
 
 const STATUS_TABS = [

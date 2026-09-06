@@ -19,7 +19,7 @@ const HeroSection = ({ stats, onScrollToContests }) => {
 
         {/* Subtitle */}
         <p className="hero-description">
-          Track upcoming & ongoing contests across <strong>LeetCode</strong>, <strong>Codeforces</strong>, and <strong>CodeChef</strong>. Synchronized in your local timezone with live countdowns and 1-click Google Calendar integration.
+          Track upcoming & ongoing contests across <strong>LeetCode</strong>, <strong>Codeforces</strong>, <strong>CodeChef</strong>, and <strong>AtCoder</strong>. Synchronized in your local timezone with live countdowns and 1-click Google Calendar integration.
         </p>
 
         {/* Quick Stats Grid */}
@@ -49,7 +49,7 @@ const HeroSection = ({ stats, onScrollToContests }) => {
               <CalendarCheck size={20} />
             </div>
             <div className="stat-info">
-              <span className="stat-value">3 Platforms</span>
+              <span className="stat-value">4 Platforms</span>
               <span className="stat-label">Auto-Synchronized</span>
             </div>
           </div>

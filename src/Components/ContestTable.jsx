@@ -39,6 +39,7 @@ const ContestTable = ({ contests }) => {
                       {contest.platform === 'LeetCode' && '🟡'}
                       {contest.platform === 'Codeforces' && '🟢'}
                       {contest.platform === 'CodeChef' && '🔴'}
+                      {contest.platform === 'AtCoder' && '⚫'}
                       {' '}{contest.platform}
                     </span>
                   </td>

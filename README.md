@@ -9,29 +9,34 @@ Never miss your next coding contest again!
 - 1 View upcoming **LeetCode** contests
 - 2 View upcoming **Codeforces** contests
 - 3 View upcoming **CodeChef** contests
-- 4 Simple and clean user interface
-- 5 Switch between platforms with a single click
-- 6 FastAPI backend for fetching contest data
-- 7 React frontend for a smooth user experience
+- 4 View upcoming **AtCoder** contests
+- 5 Simple and clean user interface
+- 6 Switch between platforms with a single click
+- 7 FastAPI backend for fetching contest data
+- 8 React frontend for a smooth user experience
 
 ---
 
 ##  Tech Stack
 
 ### Frontend
-- React
-- HTML5
-- CSS3
-- JavaScript
+- React 19
+- Vite
+- Redux Toolkit
+- Lucide React
+- `@qatadaazzeh/atcoder-api`
 
 ### Backend
 - FastAPI
 - Python
+- BeautifulSoup4
+- Requests / HTTPX
 
-### APIs
+### APIs & Data Sources
 - LeetCode
 - Codeforces
 - CodeChef
+- AtCoder (`@qatadaazzeh/atcoder-api` & real-time scraper)
 
 ---
 

@@ -1,4 +1,5 @@
 // API service for NextContest
+import { fetchUpcomingContests, fetchRecentContests } from '@qatadaazzeh/atcoder-api';
 
 const BACKEND_URLS = [
   import.meta.env.VITE_API_BASE_URL,
@@ -153,11 +154,126 @@ export function normalizeCodeChef(data) {
 }
 
 /**
+ * Normalizes AtCoder response (from Backend or @qatadaazzeh/atcoder-api)
+ */
+export function normalizeAtCoder(data) {
+  if (data?.upcoming_contests || data?.past_contests || data?.live_contests) {
+    const formatItem = (c, defaultStatus) => ({
+      id: c.id || c.contestId || c.name || c.contestName,
+      name: c.name || c.contestName,
+      platform: 'AtCoder',
+      platformKey: 'atcoder',
+      url: c.url || c.contestUrl || `https://atcoder.jp/contests/${c.id || c.contestId || ''}`,
+      startTime: c.startTime || c.contestTime,
+      startDateStr: c.startDateStr || c.contestTime,
+      duration: c.duration || 7200,
+      status: c.status || defaultStatus,
+      rated: c.rated ?? (c.isRated ? 'Rated' : '-')
+    });
+
+    return {
+      upcoming: (data.upcoming_contests || []).map(c => formatItem(c, 'UPCOMING')),
+      past: (data.past_contests || []).map(c => formatItem(c, 'FINISHED')),
+      live: (data.live_contests || []).map(c => formatItem(c, 'LIVE'))
+    };
+  }
+
+  // If array directly from @qatadaazzeh/atcoder-api or custom list
+  const rawList = Array.isArray(data) ? data : (data?.contests || []);
+  const upcoming = [];
+  const past = [];
+  const live = [];
+  const nowSec = Math.floor(Date.now() / 1000);
+
+  rawList.forEach((c) => {
+    let startSec = 0;
+    if (typeof c.startTime === 'number') {
+      startSec = c.startTime;
+    } else if (typeof c.contestTime === 'string') {
+      startSec = Math.floor(new Date(c.contestTime.replace(' ', 'T')).getTime() / 1000);
+    } else if (c.startTime) {
+      startSec = Math.floor(new Date(c.startTime).getTime() / 1000);
+    }
+
+    let durSec = 7200;
+    if (typeof c.duration === 'number') {
+      durSec = c.duration;
+    } else if (typeof c.contestDuration === 'string') {
+      const parts = c.contestDuration.split(':').map(Number);
+      if (parts.length === 2) durSec = parts[0] * 3600 + parts[1] * 60;
+      else if (parts.length === 3) durSec = parts[0] * 3600 + parts[1] * 60 + parts[2];
+    }
+
+    const isLive = startSec > 0 && nowSec >= startSec && nowSec < startSec + durSec;
+    const isPast = startSec > 0 && nowSec >= startSec + durSec;
+    const isUpcoming = startSec > 0 ? nowSec < startSec : true;
+
+    const item = {
+      id: c.contestId || c.id || c.contestName || c.name,
+      name: c.contestName || c.name,
+      platform: 'AtCoder',
+      platformKey: 'atcoder',
+      url: c.contestUrl || c.url || (c.contestId ? `https://atcoder.jp/contests/${c.contestId}` : 'https://atcoder.jp/contests'),
+      startTime: startSec || c.contestTime || c.startTime,
+      duration: durSec,
+      status: isLive ? 'LIVE' : (isUpcoming ? 'UPCOMING' : 'FINISHED'),
+      rated: c.isRated !== undefined ? (c.isRated ? 'Rated' : '-') : '-'
+    };
+
+    if (isLive) {
+      live.push(item);
+      upcoming.push(item);
+    } else if (isUpcoming) {
+      upcoming.push(item);
+    } else if (isPast) {
+      past.push(item);
+    } else {
+      past.push(item);
+    }
+  });
+
+  return { upcoming, past, live };
+}
+
+/**
+ * Fallback to @qatadaazzeh/atcoder-api package
+ */
+export async function fetchAtCoderFromPackage() {
+  try {
+    const [upcoming, recent] = await Promise.all([
+      fetchUpcomingContests().catch(() => []),
+      fetchRecentContests().catch(() => [])
+    ]);
+    return normalizeAtCoder({
+      upcoming_contests: upcoming,
+      past_contests: recent
+    });
+  } catch (err) {
+    console.warn("Failed to fetch from @qatadaazzeh/atcoder-api:", err);
+    return { upcoming: [], past: [], live: [] };
+  }
+}
+
+/**
  * Fetch platform data
  */
 export async function fetchPlatformData(platform) {
   if (platform === 'All') {
     return fetchAllPlatforms();
+  }
+
+  if (platform === 'Atcoder') {
+    try {
+      const data = await requestWithFallback('Atcoder');
+      return normalizeAtCoder(data);
+    } catch (backendErr) {
+      console.warn('Backend /Atcoder failed, attempting @qatadaazzeh/atcoder-api fallback:', backendErr);
+      const pkgData = await fetchAtCoderFromPackage();
+      if (pkgData.upcoming.length > 0 || pkgData.past.length > 0) {
+        return pkgData;
+      }
+      throw backendErr;
+    }
   }
 
   const data = await requestWithFallback(platform);
@@ -180,10 +296,23 @@ export async function fetchAllPlatforms() {
       const cfNorm = normalizeCodeforces(allRes.codeforces);
       const ccNorm = normalizeCodeChef(allRes.codechef);
 
+      let atNorm = { upcoming: [], past: [], live: [] };
+      if (allRes.atcoder) {
+        atNorm = normalizeAtCoder(allRes.atcoder);
+      } else {
+        try {
+          const atData = await requestWithFallback('Atcoder');
+          atNorm = normalizeAtCoder(atData);
+        } catch {
+          atNorm = await fetchAtCoderFromPackage();
+        }
+      }
+
       const upcoming = [
         ...lcNorm.upcoming,
         ...cfNorm.upcoming,
-        ...ccNorm.upcoming
+        ...ccNorm.upcoming,
+        ...atNorm.upcoming
       ].sort((a, b) => {
         const timeA = typeof a.startTime === 'number' ? a.startTime * 1000 : new Date(a.startTime).getTime();
         const timeB = typeof b.startTime === 'number' ? b.startTime * 1000 : new Date(b.startTime).getTime();
@@ -193,7 +322,8 @@ export async function fetchAllPlatforms() {
       const past = [
         ...lcNorm.past,
         ...cfNorm.past,
-        ...ccNorm.past
+        ...ccNorm.past,
+        ...atNorm.past
       ].sort((a, b) => {
         const timeA = typeof a.startTime === 'number' ? a.startTime * 1000 : new Date(a.startTime).getTime();
         const timeB = typeof b.startTime === 'number' ? b.startTime * 1000 : new Date(b.startTime).getTime();
@@ -203,7 +333,8 @@ export async function fetchAllPlatforms() {
       const live = [
         ...lcNorm.live,
         ...cfNorm.live,
-        ...ccNorm.live
+        ...ccNorm.live,
+        ...atNorm.live
       ];
 
       return { upcoming, past, live };
@@ -213,20 +344,23 @@ export async function fetchAllPlatforms() {
   }
 
   // Parallel fallback
-  const [lcRes, cfRes, ccRes] = await Promise.allSettled([
+  const [lcRes, cfRes, ccRes, atRes] = await Promise.allSettled([
     requestWithFallback('Leetcode'),
     requestWithFallback('Codeforces'),
-    requestWithFallback('Codechef')
+    requestWithFallback('Codechef'),
+    requestWithFallback('Atcoder').catch(() => fetchAtCoderFromPackage())
   ]);
 
   const lcNorm = lcRes.status === 'fulfilled' ? normalizeLeetCode(lcRes.value) : { upcoming: [], past: [], live: [] };
   const cfNorm = cfRes.status === 'fulfilled' ? normalizeCodeforces(cfRes.value) : { upcoming: [], past: [], live: [] };
   const ccNorm = ccRes.status === 'fulfilled' ? normalizeCodeChef(ccRes.value) : { upcoming: [], past: [], live: [] };
+  const atNorm = atRes.status === 'fulfilled' ? normalizeAtCoder(atRes.value) : { upcoming: [], past: [], live: [] };
 
   const upcoming = [
     ...lcNorm.upcoming,
     ...cfNorm.upcoming,
-    ...ccNorm.upcoming
+    ...ccNorm.upcoming,
+    ...atNorm.upcoming
   ].sort((a, b) => {
     const timeA = typeof a.startTime === 'number' ? a.startTime * 1000 : new Date(a.startTime).getTime();
     const timeB = typeof b.startTime === 'number' ? b.startTime * 1000 : new Date(b.startTime).getTime();
@@ -236,7 +370,8 @@ export async function fetchAllPlatforms() {
   const past = [
     ...lcNorm.past,
     ...cfNorm.past,
-    ...ccNorm.past
+    ...ccNorm.past,
+    ...atNorm.past
   ].sort((a, b) => {
     const timeA = typeof a.startTime === 'number' ? a.startTime * 1000 : new Date(a.startTime).getTime();
     const timeB = typeof b.startTime === 'number' ? b.startTime * 1000 : new Date(b.startTime).getTime();
@@ -246,7 +381,8 @@ export async function fetchAllPlatforms() {
   const live = [
     ...lcNorm.live,
     ...cfNorm.live,
-    ...ccNorm.live
+    ...ccNorm.live,
+    ...atNorm.live
   ];
 
   return { upcoming, past, live };
