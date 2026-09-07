@@ -1,47 +1,266 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-:root {
+/* ==========================================================================
+   DESIGN TOKENS & MULTI-THEME ARCHITECTURE
+   Themes: Slate (Default), Obsidian, Paper, Terminal
+   ========================================================================== */
+
+/* ==========================================================================
+   THEME: SLATE (DEFAULT) — Cool Navy, Slate Gray, Cyan Accent
+   ========================================================================== */
+:root,
+[data-theme="slate"] {
+  /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Theme Colors */
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #0f172a;
-  --bg-card: rgba(17, 24, 39, 0.75);
-  --bg-card-hover: rgba(30, 41, 59, 0.85);
-  --bg-input: rgba(15, 23, 42, 0.8);
-  
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-color-hover: rgba(255, 255, 255, 0.18);
-  --border-glow: rgba(59, 130, 246, 0.3);
+  /* Surfaces & Backgrounds */
+  --bg-primary: #0b0f17;
+  --bg-surface: #111827;
+  --bg-surface-secondary: #1e293b;
+  --bg-surface-hover: #273549;
+  --bg-card: #111827;
+  --bg-card-hover: #192438;
+  --bg-input: #0e1420;
+  --bg-overlay: rgba(11, 15, 23, 0.88);
 
-  --text-primary: #f8fafc;
+  /* Borders */
+  --border-color: #243248;
+  --border-color-hover: #374b6b;
+  --border-focus: #38bdf8;
+  --border-subtle: #192233;
+
+  /* Text Hierarchy */
+  --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
+  --text-inverse: #0b0f17;
 
-  /* Brand Accents */
-  --primary-accent: #3b82f6;
-  --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  --accent-glow: 0 0 25px rgba(59, 130, 246, 0.25);
+  /* Primary Accent: Crisp Muted Cyan */
+  --accent-primary: #38bdf8;
+  --accent-primary-hover: #0ea5e9;
+  --accent-primary-text: #0b0f17;
+  --accent-subtle: rgba(56, 189, 248, 0.12);
+  --accent-subtle-hover: rgba(56, 189, 248, 0.2);
+
+  /* Semantic Status Indicators */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.12);
+  --success-border: rgba(16, 185, 129, 0.28);
+
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --warning-border: rgba(245, 158, 11, 0.28);
+
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.28);
+
+  --info: #38bdf8;
+  --info-bg: rgba(56, 189, 248, 0.12);
+  --info-border: rgba(56, 189, 248, 0.28);
+
+  /* Platforms */
+  --leetcode-color: #f59e0b;
+  --codeforces-color: #38bdf8;
+  --codechef-color: #a855f7;
+  --atcoder-color: #10b981;
+
+  /* Geometry & Shadows */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+  --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.55);
+
+  --bg-pattern: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.03) 0%, transparent 60%);
+}
+
+/* ==========================================================================
+   THEME: OBSIDIAN — Dark Near-Black Terminal Aesthetic
+   ========================================================================== */
+[data-theme="obsidian"] {
+  --bg-primary: #0a0a0a;
+  --bg-surface: #141414;
+  --bg-surface-secondary: #1a1a1a;
+  --bg-surface-hover: #222222;
+  --bg-card: #141414;
+  --bg-card-hover: #1a1a1a;
+  --bg-input: #121212;
+  --bg-overlay: rgba(10, 10, 10, 0.85);
+
+  --border-color: #262626;
+  --border-color-hover: #383838;
+  --border-focus: #525252;
+  --border-subtle: #1c1c1c;
+
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
+  --text-inverse: #0a0a0a;
+
+  --accent-primary: #ffffff;
+  --accent-primary-hover: #e5e5e5;
+  --accent-primary-text: #0a0a0a;
+  --accent-subtle: rgba(255, 255, 255, 0.08);
+  --accent-subtle-hover: rgba(255, 255, 255, 0.14);
+
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.12);
+  --success-border: rgba(16, 185, 129, 0.28);
+
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --warning-border: rgba(245, 158, 11, 0.28);
+
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.28);
+
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.12);
+  --info-border: rgba(59, 130, 246, 0.28);
 
   --leetcode-color: #f59e0b;
-  --leetcode-gradient: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
   --codeforces-color: #38bdf8;
-  --codeforces-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-  --codechef-color: #a855f7;
-  --codechef-gradient: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  --codechef-color: #c084fc;
   --atcoder-color: #10b981;
-  --atcoder-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
 
-  --live-color: #ef4444;
-  --upcoming-color: #10b981;
-  --past-color: #64748b;
+  --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.5);
+
+  --bg-pattern: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
 }
+
+/* ==========================================================================
+   THEME: PAPER — Light Editorial Product
+   ========================================================================== */
+[data-theme="paper"] {
+  --bg-primary: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-surface-secondary: #f4f4f5;
+  --bg-surface-hover: #ececee;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f9f9fb;
+  --bg-input: #ffffff;
+  --bg-overlay: rgba(250, 250, 250, 0.88);
+
+  --border-color: #e4e4e7;
+  --border-color-hover: #d4d4d8;
+  --border-focus: #18181b;
+  --border-subtle: #f0f0f2;
+
+  --text-primary: #111827;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+  --text-inverse: #ffffff;
+
+  --accent-primary: #18181b;
+  --accent-primary-hover: #27272a;
+  --accent-primary-text: #ffffff;
+  --accent-subtle: rgba(24, 24, 27, 0.05);
+  --accent-subtle-hover: rgba(24, 24, 27, 0.09);
+
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.08);
+  --success-border: rgba(5, 150, 105, 0.22);
+
+  --warning: #d97706;
+  --warning-bg: rgba(217, 119, 6, 0.08);
+  --warning-border: rgba(217, 119, 6, 0.22);
+
+  --danger: #dc2626;
+  --danger-bg: rgba(220, 38, 38, 0.08);
+  --danger-border: rgba(220, 38, 38, 0.22);
+
+  --info: #2563eb;
+  --info-bg: rgba(37, 99, 235, 0.08);
+  --info-border: rgba(37, 99, 235, 0.22);
+
+  --leetcode-color: #d97706;
+  --codeforces-color: #0284c7;
+  --codechef-color: #7c3aed;
+  --atcoder-color: #059669;
+
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  --bg-pattern: radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.02) 0%, transparent 60%);
+}
+
+/* ==========================================================================
+   THEME: TERMINAL — Monochrome Screen & Subtle Terminal Green
+   ========================================================================== */
+[data-theme="terminal"] {
+  --bg-primary: #080c0a;
+  --bg-surface: #0f1713;
+  --bg-surface-secondary: #14211a;
+  --bg-surface-hover: #1b2d23;
+  --bg-card: #0f1713;
+  --bg-card-hover: #14211a;
+  --bg-input: #0a110e;
+  --bg-overlay: rgba(8, 12, 10, 0.9);
+
+  --border-color: #1e3328;
+  --border-color-hover: #2c4a3b;
+  --border-focus: #22c55e;
+  --border-subtle: #14241b;
+
+  --text-primary: #ecfdf5;
+  --text-secondary: #9bd2b5;
+  --text-muted: #57866d;
+  --text-inverse: #052e16;
+
+  --accent-primary: #22c55e;
+  --accent-primary-hover: #16a34a;
+  --accent-primary-text: #052e16;
+  --accent-subtle: rgba(34, 197, 94, 0.12);
+  --accent-subtle-hover: rgba(34, 197, 94, 0.2);
+
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.12);
+  --success-border: rgba(34, 197, 94, 0.3);
+
+  --warning: #eab308;
+  --warning-bg: rgba(234, 179, 8, 0.12);
+  --warning-border: rgba(234, 179, 8, 0.3);
+
+  --danger: #f43f5e;
+  --danger-bg: rgba(244, 63, 94, 0.12);
+  --danger-border: rgba(244, 63, 94, 0.3);
+
+  --info: #38bdf8;
+  --info-bg: rgba(56, 189, 248, 0.12);
+  --info-border: rgba(56, 189, 248, 0.3);
+
+  --leetcode-color: #eab308;
+  --codeforces-color: #38bdf8;
+  --codechef-color: #a78bfa;
+  --atcoder-color: #22c55e;
+
+  --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-elevated: 0 8px 30px rgba(0, 0, 0, 0.6);
+
+  --bg-pattern: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.03) 0%, transparent 60%);
+}
+
+/* ==========================================================================
+   GLOBAL RESET & BASE STYLES
+   ========================================================================== */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+html[data-theme="paper"] {
+  color-scheme: light;
 }
 
 body {
@@ -51,17 +270,17 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.5) 0%, transparent 100%);
+  background-image: var(--bg-pattern);
   background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-/* Custom Scrollbar */
+/* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -69,12 +288,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: var(--border-color);
+  border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: var(--border-color-hover);
 }
 
 a {
@@ -87,4 +306,15 @@ button {
   border: none;
   background: none;
   font-family: inherit;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Monospace Helpers */
+.font-mono {
+  font-family: var(--font-mono);
 }

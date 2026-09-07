@@ -1,0 +1,147 @@
+.theme-switcher-container {
+  position: relative;
+  display: inline-flex;
+}
+
+.theme-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.theme-trigger-btn:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-color-hover);
+  color: var(--text-primary);
+}
+
+.theme-trigger-icon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.theme-trigger-name {
+  font-weight: 600;
+}
+
+.theme-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 210px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.35rem;
+  box-shadow: var(--shadow-elevated);
+  z-index: 200;
+  animation: themeMenuFade 0.12s ease-out;
+}
+
+@keyframes themeMenuFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.theme-menu-header {
+  padding: 0.4rem 0.65rem 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 0.25rem;
+}
+
+.theme-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.theme-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.theme-option-item:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.theme-option-item.active {
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.theme-option-left {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.theme-option-icon {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.theme-option-item.active .theme-option-icon {
+  color: var(--text-primary);
+}
+
+.theme-option-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-option-name {
+  font-size: 0.82rem;
+  line-height: 1.2;
+}
+
+.theme-option-desc {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.theme-check-icon {
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .theme-trigger-name {
+    display: none;
+  }
+  .theme-trigger-btn {
+    padding: 0.45rem;
+  }
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, ArrowRight, User, AlertCircle, X } from 'lucide-react';
+import { ArrowRight, User, AlertCircle, X, Terminal } from 'lucide-react';
 
 const SUGGESTIONS = ['tourist', 'neal_wu', 'lee215', 'StefanPochmann', 'hiepit'];
 
@@ -22,24 +22,24 @@ const AiContestHero = ({ onAnalyze, isLoading, error, initialUsername = '' }) =>
   return (
     <div className="ai-hero-card">
       <div className="ai-badge">
-        <Sparkles size={14} />
-        <span>AI-Powered CP Intelligence</span>
+        <Terminal size={13} />
+        <span>ADAPTIVE CONTEST ENGINE</span>
       </div>
 
       <h1 className="ai-hero-title">
-        AI Personalized <span>Contest</span>
+        Personalized Contest <span className="ai-hero-title-sub">Generator</span>
       </h1>
 
       <p className="ai-hero-subtitle">
-        Analyze your competitive programming profile and get a contest built specifically for your strengths and weaknesses.
+        Analyze your competitive programming profile and generate a 4-problem contest calibrated specifically for your skill level and growth areas.
       </p>
 
       <div className="ai-input-box-wrapper">
         <form onSubmit={handleSubmit} className="ai-input-form">
-          <User size={18} className="ai-input-icon" />
+          <User size={16} className="ai-input-icon" />
           <input
             type="text"
-            placeholder="Enter LeetCode username (e.g. your_handle)"
+            placeholder="Enter LeetCode username..."
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className="ai-input-field"
@@ -50,10 +50,10 @@ const AiContestHero = ({ onAnalyze, isLoading, error, initialUsername = '' }) =>
             <button
               type="button"
               onClick={() => setUsername('')}
-              style={{ color: '#64748b', padding: '0 4px', cursor: 'pointer' }}
+              className="ai-input-clear-btn"
               title="Clear"
             >
-              <X size={15} />
+              <X size={14} />
             </button>
           )}
           <button
@@ -61,13 +61,13 @@ const AiContestHero = ({ onAnalyze, isLoading, error, initialUsername = '' }) =>
             className="ai-submit-btn"
             disabled={isLoading || !username.trim()}
           >
-            <span>Analyze My Profile</span>
-            <ArrowRight size={16} />
+            <span>Analyze Profile</span>
+            <ArrowRight size={14} />
           </button>
         </form>
 
         <div className="ai-quick-samples">
-          <span>Popular handles to test:</span>
+          <span className="ai-samples-label">Test with:</span>
           {SUGGESTIONS.map((s) => (
             <button
               key={s}
@@ -83,7 +83,7 @@ const AiContestHero = ({ onAnalyze, isLoading, error, initialUsername = '' }) =>
 
         {error && (
           <div className="ai-error-banner">
-            <AlertCircle size={18} />
+            <AlertCircle size={16} />
             <span>{error}</span>
           </div>
         )}

@@ -12,8 +12,16 @@
     <meta name="keywords" content="NextContest, next contest, coding contest tracker, upcoming coding contests, leetcode contests, codeforces contests, codechef contests, atcoder contests, competitive programming" />
     <meta name="author" content="Gyanendra Kumar" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#3b82f6" />
+    <meta name="theme-color" content="#0b0f17" />
     <link rel="canonical" href="https://next-contest-zeta.vercel.app/" />
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('nextcontest_theme') || 'slate';
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        } catch (e) {}
+      })();
+    </script>
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />

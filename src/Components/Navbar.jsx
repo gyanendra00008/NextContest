@@ -3,6 +3,7 @@ import './Navbar.css';
 import { getUserTimeZone } from '../utils/timeUtils';
 import { Clock, RefreshCw, Trophy, Sparkles } from 'lucide-react';
 import { GithubIcon } from './Icons';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab }) => {
   const [currentTime, setCurrentTime] = useState(() => new Date());
@@ -38,7 +39,7 @@ const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab 
           </div>
           <div className="brand-text-wrapper">
             <div className="brand-title-row">
-              <h1 className="brand-title">Next<span>Contest</span></h1>
+              <h1 className="brand-title">Next<span className="brand-title-suffix">Contest</span></h1>
               <span className="version-pill">v2.0</span>
             </div>
             <div className="live-status-indicator">
@@ -56,7 +57,7 @@ const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab 
               className={`nav-tab-btn ${activeTab === 'contests' ? 'active' : ''}`}
               onClick={() => setActiveTab('contests')}
             >
-              <Trophy size={15} />
+              <Trophy size={14} />
               <span>Contests</span>
             </button>
             <button
@@ -64,7 +65,7 @@ const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab 
               className={`nav-tab-btn ai-tab ${activeTab === 'ai-contest' ? 'active' : ''}`}
               onClick={() => setActiveTab('ai-contest')}
             >
-              <Sparkles size={15} />
+              <Sparkles size={14} />
               <span>AI Contest</span>
               <span className="ai-nav-tag">AI</span>
             </button>
@@ -72,14 +73,16 @@ const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab 
         )}
 
         {/* Live User Time Widget */}
-        <div className="time-widget" title={`Local Timezone: ${timeZoneStr}`}>
-          <Clock className="time-icon" size={16} />
+        {/* <div className="time-widget" title={`Local Timezone: ${timeZoneStr}`}>
+          <Clock className="time-icon" size={15} />
           <span className="time-display">{formattedTime}</span>
           <span className="timezone-badge">{timeZoneStr.split(' ')[0]}</span>
-        </div>
+        </div> */}
 
-        {/* Action Controls */}
+        {/* Action Controls: Theme Switcher, Sync, Star */}
         <div className="navbar-actions">
+          <ThemeSwitcher />
+
           {onRefresh && (
             <button 
               className={`refresh-btn ${isRefreshing ? 'spinning' : ''}`}
@@ -87,7 +90,7 @@ const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab 
               title="Refresh contests data"
               aria-label="Refresh contests"
             >
-              <RefreshCw size={17} />
+              <RefreshCw size={15} />
               <span className="refresh-label">Sync</span>
             </button>
           )}
@@ -99,7 +102,7 @@ const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab 
             className="github-link"
             title="View Source on GitHub"
           >
-            <GithubIcon size={18} />
+            <GithubIcon size={16} />
             <span className="github-label">Star</span>
           </a>
         </div>

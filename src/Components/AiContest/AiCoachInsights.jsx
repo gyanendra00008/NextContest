@@ -1,4 +1,4 @@
-import { Bot, Lightbulb, Target, Compass, Zap } from 'lucide-react';
+import { Target, Compass, Zap, BookOpen } from 'lucide-react';
 
 const AiCoachInsights = ({ aiAnalysis }) => {
   if (!aiAnalysis) return null;
@@ -9,85 +9,86 @@ const AiCoachInsights = ({ aiAnalysis }) => {
   const recommendedDifficulty = aiAnalysis.recommended_difficulty || 'Medium';
   const strategy = aiAnalysis.training_strategy || '';
 
+  const diffClass = (recommendedDifficulty || 'medium').toLowerCase();
+
   return (
-    <div className="ai-coach-card">
-      <div className="ai-coach-header">
-        <div className="ai-coach-brand">
-          <div className="ai-coach-avatar">
-            <Bot size={22} />
-          </div>
-          <div>
-            <h3 className="ai-coach-title">AI Competitive Programming Coach</h3>
-            <span className="ai-coach-subtitle">Personalized Mentor Analysis & Strategy</span>
-          </div>
+    <div className="coach-analysis-card">
+      <div className="coach-analysis-header">
+        <div className="coach-header-left">
+          <span className="coach-section-tag">COACH ANALYSIS</span>
+          <h3 className="coach-analysis-title">Performance Debrief & Training Trajectory</h3>
         </div>
 
-        <div className="ai-coach-diff-badge">
-          <Target size={14} />
+        <div className={`coach-diff-pill ${diffClass}`}>
+          <Target size={13} />
           <span>Recommended Target: {recommendedDifficulty}</span>
         </div>
       </div>
 
-      <div className="ai-coach-grid">
+      <div className="coach-analysis-divider" />
+
+      <div className="coach-analysis-grid">
         {/* Identified Strengths */}
-        <div className="ai-coach-block">
-          <div className="ai-coach-block-label">
-            <Zap size={14} />
-            <span>Core Strengths</span>
+        <div className="coach-block">
+          <div className="coach-block-header">
+            <Zap size={14} className="coach-icon-strength" />
+            <h4 className="coach-block-label">Strengths</h4>
           </div>
-          <ul className="ai-coach-list">
+          <ul className="coach-list">
             {strengths.length > 0 ? (
               strengths.map((s, idx) => (
                 <li key={idx}>
-                  <span className="ai-coach-bullet" style={{ background: '#10b981' }}></span>
-                  <span>{s}</span>
+                  <span className="coach-bullet strength"></span>
+                  <span className="coach-item-text">{s}</span>
                 </li>
               ))
             ) : (
-              <li>Arrays and Hash Tables</li>
+              <li>
+                <span className="coach-bullet strength"></span>
+                <span className="coach-item-text">Arrays and Hash Tables</span>
+              </li>
             )}
           </ul>
         </div>
 
         {/* Priority Focus Areas */}
-        <div className="ai-coach-block">
-          <div className="ai-coach-block-label">
-            <Compass size={14} />
-            <span>Priority Focus Areas</span>
+        <div className="coach-block">
+          <div className="coach-block-header">
+            <Compass size={14} className="coach-icon-focus" />
+            <h4 className="coach-block-label">Focus Areas</h4>
           </div>
-          <ul className="ai-coach-list">
+          <ul className="coach-list">
             {weaknesses.length > 0 ? (
               weaknesses.map((w, idx) => (
                 <li key={idx}>
-                  <span className="ai-coach-bullet" style={{ background: '#f59e0b' }}></span>
-                  <span>{w}</span>
+                  <span className="coach-bullet focus"></span>
+                  <span className="coach-item-text">{w}</span>
                 </li>
               ))
             ) : (
-              <li>Dynamic Programming & Graphs</li>
+              <li>
+                <span className="coach-bullet focus"></span>
+                <span className="coach-item-text">Dynamic Programming & Graphs</span>
+              </li>
             )}
           </ul>
         </div>
 
-        {/* Recommended Practice Topics */}
-        <div className="ai-coach-block">
-          <div className="ai-coach-block-label">
-            <Lightbulb size={14} />
-            <span>Recommended Topics</span>
+        {/* Recommended Practice Path */}
+        <div className="coach-block">
+          <div className="coach-block-header">
+            <BookOpen size={14} className="coach-icon-topics" />
+            <h4 className="coach-block-label">Recommended Path</h4>
           </div>
-          <div className="ai-topic-chips-list" style={{ marginTop: '0.4rem' }}>
+          <div className="coach-topic-chips">
             {recommendedTopics.length > 0 ? (
               recommendedTopics.map((topic, idx) => (
-                <span
-                  key={idx}
-                  className="ai-mini-tag"
-                  style={{ background: 'rgba(168, 85, 247, 0.15)', borderColor: 'rgba(168, 85, 247, 0.3)', color: '#d8b4fe' }}
-                >
+                <span key={idx} className="coach-topic-tag">
                   {topic}
                 </span>
               ))
             ) : (
-              <span className="ai-mini-tag">BFS/DFS, 1D DP, Sliding Window</span>
+              <span className="coach-topic-tag">BFS / DFS · 1D DP · Sliding Window</span>
             )}
           </div>
         </div>
@@ -95,9 +96,9 @@ const AiCoachInsights = ({ aiAnalysis }) => {
 
       {/* Actionable Training Strategy */}
       {strategy && (
-        <div className="ai-strategy-box">
-          <div className="ai-strategy-title">Actionable Coaching Strategy</div>
-          <p className="ai-strategy-text">{strategy}</p>
+        <div className="coach-strategy-card">
+          <div className="coach-strategy-label">Strategy</div>
+          <p className="coach-strategy-text">{strategy}</p>
         </div>
       )}
     </div>

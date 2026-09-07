@@ -18,10 +18,11 @@ const PersonalizedContestPreview = ({ contest, onStartContest, onReroll, isRerol
     <div className="ai-contest-preview-card">
       <div className="ai-contest-header-row">
         <div className="ai-contest-heading-box">
-          <div className="ai-badge" style={{ alignSelf: 'flex-start', margin: 0 }}>
-            <span>Personalized Contest Generation</span>
+          <div className="ai-contest-badge-row">
+            <span className="ai-contest-mono-tag">CURATED CONTEST</span>
+            <span className="ai-contest-tier-tag">Tier: {tier}</span>
           </div>
-          <h2 className="ai-contest-title">{contest.title || 'Your Personalized Contest'}</h2>
+          <h2 className="ai-contest-title">{contest.title || 'Personalized Practice Contest'}</h2>
           <div className="ai-contest-meta-chips">
             <span className="ai-meta-pill">
               <Clock size={13} />
@@ -33,7 +34,7 @@ const PersonalizedContestPreview = ({ contest, onStartContest, onReroll, isRerol
             </span>
             <span className="ai-meta-pill">
               <ShieldCheck size={13} />
-              <span>Tier: {tier}</span>
+              <span>Calibrated Curve</span>
             </span>
           </div>
         </div>
@@ -43,9 +44,9 @@ const PersonalizedContestPreview = ({ contest, onStartContest, onReroll, isRerol
           className="ai-reroll-btn"
           onClick={onReroll}
           disabled={isRerolling}
-          title="Generate a fresh problem combination"
+          title="Regenerate a new combination of problems"
         >
-          <RotateCw size={15} className={isRerolling ? 'spinning' : ''} />
+          <RotateCw size={14} className={isRerolling ? 'spinning' : ''} />
           <span>New Variant</span>
         </button>
       </div>
@@ -62,12 +63,17 @@ const PersonalizedContestPreview = ({ contest, onStartContest, onReroll, isRerol
           const diffClass = (prob.difficulty || 'Medium').toLowerCase();
 
           return (
-            <div key={prob.title_slug || prob.frontend_id} className="ai-problem-card">
+            <div key={prob.title_slug || prob.frontend_id} className={`ai-problem-card slot-${slot.toLowerCase()}`}>
               <div className="ai-problem-top">
                 <div className="ai-slot-row">
-                  <span className="ai-slot-badge">{slot}</span>
-                  <span className="ai-slot-role-pill">{roleLabel}</span>
-                  <span className={`ai-diff-chip ${diffClass}`}>{prob.difficulty}</span>
+                  <div className="ai-slot-left">
+                    <span className="ai-slot-badge">{slot}</span>
+                    <span className="ai-slot-role-pill">{roleLabel}</span>
+                  </div>
+                  <span className={`ai-diff-chip ${diffClass}`}>
+                    <span className={`ai-diff-dot ${diffClass}`}></span>
+                    {prob.difficulty}
+                  </span>
                 </div>
 
                 <a
@@ -75,10 +81,10 @@ const PersonalizedContestPreview = ({ contest, onStartContest, onReroll, isRerol
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ai-problem-title-link"
-                  title="View problem on LeetCode"
+                  title="Open problem on LeetCode"
                 >
-                  <span>{prob.frontend_id ? `${prob.frontend_id}. ` : ''}{prob.title}</span>
-                  <ExternalLink size={14} />
+                  <span className="ai-prob-name">{prob.frontend_id ? `${prob.frontend_id}. ` : ''}{prob.title}</span>
+                  <ExternalLink size={13} className="ai-prob-link-icon" />
                 </a>
 
                 {prob.tags && prob.tags.length > 0 && (
@@ -97,23 +103,23 @@ const PersonalizedContestPreview = ({ contest, onStartContest, onReroll, isRerol
               </div>
 
               <div className="ai-problem-bottom-bar">
-                <span className="ai-ac-rate">Acceptance: {prob.ac_rate || 'N/A'}</span>
-                <span style={{ color: '#10b981', fontWeight: 600 }}>Free Access</span>
+                <span className="ai-ac-rate">AC Rate: {prob.ac_rate || 'N/A'}</span>
+                <span className="ai-prob-source">LeetCode</span>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Primary CTA */}
+      {/* Start Contest CTA */}
       <div className="ai-contest-cta-bar">
         <button
           type="button"
           className="ai-start-contest-btn"
           onClick={onStartContest}
         >
-          <Play size={18} fill="currentColor" />
-          <span>START PERSONALIZED CONTEST</span>
+          <Play size={16} />
+          <span>START CONTEST ({durationMins} MIN)</span>
         </button>
       </div>
     </div>

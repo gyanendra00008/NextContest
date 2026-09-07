@@ -1,32 +1,50 @@
 import './HeroSection.css';
-import { Trophy, Flame, CalendarCheck, Sparkles, ChevronDown } from 'lucide-react';
+import { Trophy, Flame, CalendarCheck, ChevronDown, Sparkles } from 'lucide-react';
 
 const HeroSection = ({ stats, onScrollToContests, onNavigateToAiContest }) => {
   return (
     <section className="hero-container">
       <div className="hero-content">
-        {/* Sub-badge */}
+        {/* Technical Label Pill */}
         <div className="hero-badge">
-          <Sparkles size={14} className="hero-badge-icon" />
-          <span>REAL-TIME COMPETITIVE PROGRAMMING HUB</span>
+          <span className="hero-badge-dot"></span>
+          <span className="hero-badge-text">COMPETITIVE PROGRAMMING PLATFORM</span>
         </div>
 
-        {/* Main Headline */}
+        {/* Strong Minimalist Headline */}
         <h1 className="hero-title">
-          All Your Coding Contests.<br />
-          <span className="gradient-text">Accurate Time. Zero Hassle.</span>
+          Find contests.<br />
+          Train smarter.<br />
+          <span className="hero-title-highlight">Compete better.</span>
         </h1>
 
-        {/* Subtitle */}
+        {/* Clean Editorial Subtitle */}
         <p className="hero-description">
-          Track upcoming & ongoing contests across <strong>LeetCode</strong>, <strong>Codeforces</strong>, <strong>CodeChef</strong>, and <strong>AtCoder</strong>. Synchronized in your local timezone with live countdowns and 1-click Google Calendar integration.
+          Real-time schedule for <strong>LeetCode</strong>, <strong>Codeforces</strong>, <strong>CodeChef</strong>, and <strong>AtCoder</strong>. Synchronized to your local timezone with live countdowns, calendar sync, and adaptive training.
         </p>
 
-        {/* Quick Stats Grid */}
+        {/* High-Contrast Action CTAs */}
+        <div className="hero-cta-group">
+          {onScrollToContests && (
+            <button className="hero-btn primary" onClick={onScrollToContests}>
+              <span>Explore Contests</span>
+              <ChevronDown size={15} />
+            </button>
+          )}
+
+          {onNavigateToAiContest && (
+            <button className="hero-btn secondary" onClick={onNavigateToAiContest}>
+              <Sparkles size={14} className="hero-btn-icon" />
+              <span>Try AI Contest</span>
+            </button>
+          )}
+        </div>
+
+        {/* Minimalist Stats Grid */}
         <div className="hero-stats-grid">
           <div className="stat-card" onClick={onScrollToContests} role="button" tabIndex={0}>
             <div className="stat-icon-wrap upcoming">
-              <Trophy size={20} />
+              <Trophy size={18} />
             </div>
             <div className="stat-info">
               <span className="stat-value">{stats?.upcomingCount ?? '—'}</span>
@@ -36,47 +54,23 @@ const HeroSection = ({ stats, onScrollToContests, onNavigateToAiContest }) => {
 
           <div className="stat-card" onClick={onScrollToContests} role="button" tabIndex={0}>
             <div className="stat-icon-wrap live">
-              <Flame size={20} />
+              <Flame size={18} />
             </div>
             <div className="stat-info">
               <span className="stat-value">{stats?.liveCount ?? '0'}</span>
-              <span className="stat-label">Live / Ongoing</span>
+              <span className="stat-label">Live Ongoing</span>
             </div>
           </div>
 
           <div className="stat-card">
             <div className="stat-icon-wrap platforms">
-              <CalendarCheck size={20} />
+              <CalendarCheck size={18} />
             </div>
             <div className="stat-info">
               <span className="stat-value">4 Platforms</span>
               <span className="stat-label">Auto-Synchronized</span>
             </div>
           </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: '0.85rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {onScrollToContests && (
-            <button className="hero-scroll-btn" onClick={onScrollToContests}>
-              <span>View All Contests</span>
-              <ChevronDown size={16} />
-            </button>
-          )}
-
-          {onNavigateToAiContest && (
-            <button
-              className="hero-scroll-btn"
-              onClick={onNavigateToAiContest}
-              style={{
-                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.25))',
-                borderColor: 'rgba(168, 85, 247, 0.45)',
-                color: '#f8fafc'
-              }}
-            >
-              <Sparkles size={16} style={{ color: '#c084fc' }} />
-              <span>AI Personalized Contest</span>
-            </button>
-          )}
         </div>
       </div>
     </section>

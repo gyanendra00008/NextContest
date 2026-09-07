@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Check, Loader2, Sparkles } from 'lucide-react';
+import { Check, Loader2, Terminal } from 'lucide-react';
 
 const STAGES = [
-  "Fetching LeetCode profile",
-  "Analyzing solved problems",
-  "Evaluating contest performance",
-  "Detecting topic strengths",
-  "Identifying growth areas",
-  "AI coach is preparing insights",
-  "Generating your personalized contest"
+  "Querying LeetCode profile & submissions",
+  "Indexing topic distribution & solved volume",
+  "Evaluating contest rating & volatility",
+  "Extracting algorithmic strength patterns",
+  "Identifying targeted growth opportunities",
+  "Synthesizing coach debrief & strategy",
+  "Assembling calibrated 4-problem contest"
 ];
 
 const AiLoadingStages = ({ username }) => {
   const [currentStageIdx, setCurrentStageIdx] = useState(0);
 
   useEffect(() => {
-    // Increment stage every 600-800ms to show real progression
     const timer = setInterval(() => {
       setCurrentStageIdx((prev) => {
         if (prev < STAGES.length - 1) {
@@ -23,7 +22,7 @@ const AiLoadingStages = ({ username }) => {
         }
         return prev;
       });
-    }, 650);
+    }, 600);
 
     return () => clearInterval(timer);
   }, []);
@@ -34,12 +33,12 @@ const AiLoadingStages = ({ username }) => {
         <div className="ai-loading-spinner-wrap">
           <div className="ai-loading-spinner"></div>
           <div className="ai-loading-icon-center">
-            <Sparkles size={22} />
+            <Terminal size={18} />
           </div>
         </div>
         <h3 className="ai-loading-title">Analyzing Profile for @{username}</h3>
         <p className="ai-loading-subtitle">
-          Crunching problem data and constructing your personalized contest...
+          Querying data layer and building calibrated problem recommendation curve...
         </p>
       </div>
 
@@ -55,8 +54,8 @@ const AiLoadingStages = ({ username }) => {
               className={`ai-stage-item ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''} ${isPending ? 'pending' : ''}`}
             >
               <div className="ai-stage-status-icon">
-                {isCompleted && <Check size={13} strokeWidth={3} />}
-                {isActive && <Loader2 size={13} className="spinning" />}
+                {isCompleted && <Check size={12} strokeWidth={3} />}
+                {isActive && <Loader2 size={12} className="spinning" />}
               </div>
               <span className="ai-stage-label">{stageText}</span>
             </div>
