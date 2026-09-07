@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import './Navbar.css';
 import { getUserTimeZone } from '../utils/timeUtils';
-import { Clock, RefreshCw } from 'lucide-react';
+import { Clock, RefreshCw, Trophy, Sparkles } from 'lucide-react';
 import { GithubIcon } from './Icons';
 
-const Navbar = ({ onRefresh, isRefreshing }) => {
+const Navbar = ({ onRefresh, isRefreshing, activeTab = 'contests', setActiveTab }) => {
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const [timeZoneStr] = useState(() => getUserTimeZone());
 
@@ -26,7 +26,7 @@ const Navbar = ({ onRefresh, isRefreshing }) => {
     <header className="navbar-container">
       <div className="navbar-inner">
         {/* Brand / Logo */}
-        <div className="navbar-brand">
+        <div className="navbar-brand" onClick={() => setActiveTab?.('contests')} style={{ cursor: 'pointer' }}>
           <div className="logo-badge">
             <img 
               src="/Mylogo.png" 
@@ -47,6 +47,29 @@ const Navbar = ({ onRefresh, isRefreshing }) => {
             </div>
           </div>
         </div>
+
+        {/* Central Feature Switcher */}
+        {setActiveTab && (
+          <nav className="navbar-nav-links" aria-label="Main Navigation">
+            <button
+              type="button"
+              className={`nav-tab-btn ${activeTab === 'contests' ? 'active' : ''}`}
+              onClick={() => setActiveTab('contests')}
+            >
+              <Trophy size={15} />
+              <span>Contests</span>
+            </button>
+            <button
+              type="button"
+              className={`nav-tab-btn ai-tab ${activeTab === 'ai-contest' ? 'active' : ''}`}
+              onClick={() => setActiveTab('ai-contest')}
+            >
+              <Sparkles size={15} />
+              <span>AI Contest</span>
+              <span className="ai-nav-tag">AI</span>
+            </button>
+          </nav>
+        )}
 
         {/* Live User Time Widget */}
         <div className="time-widget" title={`Local Timezone: ${timeZoneStr}`}>

@@ -1,7 +1,7 @@
 import './HeroSection.css';
 import { Trophy, Flame, CalendarCheck, Sparkles, ChevronDown } from 'lucide-react';
 
-const HeroSection = ({ stats, onScrollToContests }) => {
+const HeroSection = ({ stats, onScrollToContests, onNavigateToAiContest }) => {
   return (
     <section className="hero-container">
       <div className="hero-content">
@@ -55,12 +55,29 @@ const HeroSection = ({ stats, onScrollToContests }) => {
           </div>
         </div>
 
-        {onScrollToContests && (
-          <button className="hero-scroll-btn" onClick={onScrollToContests}>
-            <span>View All Contests</span>
-            <ChevronDown size={16} />
-          </button>
-        )}
+        <div style={{ display: 'flex', gap: '0.85rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          {onScrollToContests && (
+            <button className="hero-scroll-btn" onClick={onScrollToContests}>
+              <span>View All Contests</span>
+              <ChevronDown size={16} />
+            </button>
+          )}
+
+          {onNavigateToAiContest && (
+            <button
+              className="hero-scroll-btn"
+              onClick={onNavigateToAiContest}
+              style={{
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.25))',
+                borderColor: 'rgba(168, 85, 247, 0.45)',
+                color: '#f8fafc'
+              }}
+            >
+              <Sparkles size={16} style={{ color: '#c084fc' }} />
+              <span>AI Personalized Contest</span>
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );

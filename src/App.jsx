@@ -5,9 +5,16 @@ import HeroSection from './Components/HeroSection';
 import PlatformSelector from './Components/PlatformSelector';
 import Card from './Components/Card';
 import Footer from './Components/Footer';
+import AiContestView from './Components/AiContest/AiContestView';
 import { fetchPlatformData, fetchAllPlatforms } from './services/api';
 
 function App() {
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== 'undefined' && (window.location.hash === '#ai-contest' || window.location.pathname.includes('ai-contest'))) {
+      return 'ai-contest';
+    }
+    return 'contests';
+  });
   const [activePlatform, setActivePlatform] = useState('All');
   const [activeStatus, setActiveStatus] = useState('upcoming');
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +25,26 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(null);
+
+  const handleTabChange = useCallback((newTab) => {
+    setActiveTab(newTab);
+    if (typeof window !== 'undefined') {
+      window.location.hash = newTab === 'ai-contest' ? '#ai-contest' : '';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#ai-contest') {
+        setActiveTab('ai-contest');
+      } else {
+        setActiveTab('contests');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Load contest data
   const loadData = useCallback(async (isManualRefresh = false) => {
@@ -156,45 +183,55 @@ function App() {
 
   return (
     <div className="app-root">
-      {/* Navigation Bar */}
+      {/* Navigation Bar with Tab Switcher */}
       <Navbar 
         onRefresh={() => loadData(true)} 
-        isRefreshing={isRefreshing} 
+        isRefreshing={isRefreshing}
+        activeTab={activeTab}
+        setActiveTab={handleTabChange}
       />
 
       <main className="main-content">
-        {/* Hero Section */}
-        <HeroSection 
-          stats={stats} 
-          onScrollToContests={handleScrollToContests} 
-        />
+        {activeTab === 'contests' ? (
+          <>
+            {/* Hero Section */}
+            <HeroSection 
+              stats={stats} 
+              onScrollToContests={handleScrollToContests}
+              onNavigateToAiContest={() => handleTabChange('ai-contest')}
+            />
 
-        {/* Filter and Search Panel */}
-        <div id="contests-main-view">
-          <PlatformSelector
-            activePlatform={activePlatform}
-            setActivePlatform={handleSelectPlatform}
-            activeStatus={activeStatus}
-            setActiveStatus={setActiveStatus}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-            counts={counts}
-          />
+            {/* Filter and Search Panel */}
+            <div id="contests-main-view">
+              <PlatformSelector
+                activePlatform={activePlatform}
+                setActivePlatform={handleSelectPlatform}
+                activeStatus={activeStatus}
+                setActiveStatus={setActiveStatus}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                viewMode={viewMode}
+                setViewMode={setViewMode}
+                counts={counts}
+              />
 
-          {/* Contests Display (Cards or Table) */}
-          <Card
-            contests={filteredContests}
-            loading={loading}
-            error={error}
-            viewMode={viewMode}
-            onRetry={() => loadData(false)}
-            activeStatus={activeStatus}
-            searchQuery={searchQuery}
-            platform={activePlatform}
-          />
-        </div>
+              {/* Contests Display (Cards or Table) */}
+              <Card
+                contests={filteredContests}
+                loading={loading}
+                error={error}
+                viewMode={viewMode}
+                onRetry={() => loadData(false)}
+                activeStatus={activeStatus}
+                searchQuery={searchQuery}
+                platform={activePlatform}
+              />
+            </div>
+          </>
+        ) : (
+          /* AI Personalized Contest View */
+          <AiContestView />
+        )}
       </main>
 
       {/* Modern Footer */}

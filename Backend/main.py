@@ -2,16 +2,18 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import time
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import logging
+
+from Leetcode_service import router as leetcode_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("NextContestBackend")
 
 app = FastAPI(
     title="NextContest API",
-    description="Real-time Coding Contests Aggregator API for LeetCode, Codeforces, CodeChef, and AtCoder",
-    version="2.1.0"
+    description="Real-time Coding Contests Aggregator API for LeetCode, Codeforces, CodeChef, and AtCoder with LeetCode Profile & AI Coaching Analysis",
+    version="2.2.0"
 )
 
 app.add_middleware(
@@ -21,6 +23,10 @@ app.add_middleware(
     allow_headers=["*"],
     allow_methods=["*"],
 )
+
+# Include LeetCode profile analysis and AI coach endpoints
+app.include_router(leetcode_router)
+
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -214,6 +220,27 @@ def fetch_codeforces_data():
     return result
 
 
+def parse_codechef_time(date_iso: str, date_str: str) -> int:
+    """Parses CodeChef ISO string or IST date string to unix timestamp (seconds)."""
+    if date_iso:
+        try:
+            dt = datetime.fromisoformat(date_iso.replace("Z", "+00:00"))
+            return int(dt.timestamp())
+        except Exception:
+            pass
+    if date_str:
+        try:
+            # CodeChef times in date_str are IST: '09 Sep 2026  20:00:00'
+            cleaned = " ".join(date_str.strip().split())
+            dt = datetime.strptime(cleaned, "%d %b %Y %H:%M:%S")
+            ist = timezone(timedelta(hours=5, minutes=30))
+            dt = dt.replace(tzinfo=ist)
+            return int(dt.timestamp())
+        except Exception:
+            pass
+    return 0
+
+
 def fetch_codechef_data():
     cached = get_cached("codechef")
     if cached:
@@ -237,12 +264,15 @@ def fetch_codechef_data():
         except (ValueError, TypeError):
             dur_sec = 0
 
+        start_ts = parse_codechef_time(c.get("contest_start_date_iso"), c.get("contest_start_date"))
+
         upcoming_list.append({
             "id": c.get("contest_code"),
             "name": c.get("contest_name"),
             "platform": "CodeChef",
             "url": f"https://www.codechef.com/{c.get('contest_code')}",
-            "startTime": c.get("contest_start_date_iso") or c.get("contest_start_date"),
+            "startTime": start_ts if start_ts > 0 else (c.get("contest_start_date_iso") or c.get("contest_start_date")),
+            "startDateIso": c.get("contest_start_date_iso"),
             "startDateStr": c.get("contest_start_date"),
             "endDateStr": c.get("contest_end_date"),
             "duration": dur_sec,
@@ -257,12 +287,15 @@ def fetch_codechef_data():
         except (ValueError, TypeError):
             dur_sec = 0
 
+        start_ts = parse_codechef_time(c.get("contest_start_date_iso"), c.get("contest_start_date"))
+
         live_list.append({
             "id": c.get("contest_code"),
             "name": c.get("contest_name"),
             "platform": "CodeChef",
             "url": f"https://www.codechef.com/{c.get('contest_code')}",
-            "startTime": c.get("contest_start_date_iso") or c.get("contest_start_date"),
+            "startTime": start_ts if start_ts > 0 else (c.get("contest_start_date_iso") or c.get("contest_start_date")),
+            "startDateIso": c.get("contest_start_date_iso"),
             "startDateStr": c.get("contest_start_date"),
             "endDateStr": c.get("contest_end_date"),
             "duration": dur_sec,
@@ -277,12 +310,15 @@ def fetch_codechef_data():
         except (ValueError, TypeError):
             dur_sec = 0
 
+        start_ts = parse_codechef_time(c.get("contest_start_date_iso"), c.get("contest_start_date"))
+
         past_list.append({
             "id": c.get("contest_code"),
             "name": c.get("contest_name"),
             "platform": "CodeChef",
             "url": f"https://www.codechef.com/{c.get('contest_code')}",
-            "startTime": c.get("contest_start_date_iso") or c.get("contest_start_date"),
+            "startTime": start_ts if start_ts > 0 else (c.get("contest_start_date_iso") or c.get("contest_start_date")),
+            "startDateIso": c.get("contest_start_date_iso"),
             "startDateStr": c.get("contest_start_date"),
             "endDateStr": c.get("contest_end_date"),
             "duration": dur_sec,
@@ -301,6 +337,7 @@ def fetch_codechef_data():
 
     set_cache("codechef", result)
     return result
+
 
 
 def parse_duration_seconds(dur_str: str) -> int:
@@ -441,15 +478,39 @@ def fetch_atcoder_data():
 async def home():
     return {
         "status": "🚀 NextContest Backend Running",
-        "version": "2.1.0",
-        "endpoints": [
-            "/Leetcode",
-            "/Codeforces",
-            "/Codechef",
-            "/Atcoder",
-            "/All",
-            "/health"
-        ]
+        "version": "2.2.0",
+        "endpoints": {
+            "contests": [
+                "/Leetcode",
+                "/Codeforces",
+                "/Codechef",
+                "/Atcoder",
+                "/All"
+            ],
+            "leetcode_user_analysis": [
+                "/leetcode/{username}",
+                "/leetcode/{username}/skills",
+                "/leetcode/{username}/contest",
+                "/leetcode/{username}/recent",
+                "/leetcode/{username}/analysis",
+                "/leetcode/{username}/ai-analysis",
+                "/leetcode/{username}/personalized-contest"
+            ],
+            "leetcode_problem_data": [
+                "/leetcode/problems/stats",
+                "/leetcode/problems/sync",
+                "/leetcode/problems/search",
+                "/leetcode/problems/tags",
+                "/leetcode/problems/{title_slug}"
+            ],
+            "personalized_contest": [
+                "GET /leetcode/{username}/personalized-contest",
+                "POST /leetcode/personalized-contest"
+            ],
+            "system": [
+                "/health"
+            ]
+        }
     }
 
 
@@ -459,30 +520,35 @@ async def health():
 
 
 @app.get("/Leetcode")
+@app.get("/leetcode-contests")
 async def get_leetcode():
-    logger.info("LeetCode endpoint requested")
+    logger.info("LeetCode contests endpoint requested")
     return fetch_leetcode_data()
 
 
 @app.get("/Codeforces")
+@app.get("/codeforces")
 async def get_codeforces():
     logger.info("Codeforces endpoint requested")
     return fetch_codeforces_data()
 
 
 @app.get("/Codechef")
+@app.get("/codechef")
 async def get_codechef():
     logger.info("CodeChef endpoint requested")
     return fetch_codechef_data()
 
 
 @app.get("/Atcoder")
+@app.get("/atcoder")
 async def get_atcoder():
     logger.info("AtCoder endpoint requested")
     return fetch_atcoder_data()
 
 
 @app.get("/All")
+@app.get("/all")
 async def get_all_contests():
     logger.info("All contests endpoint requested")
     lc = fetch_leetcode_data()
@@ -490,13 +556,36 @@ async def get_all_contests():
     cc = fetch_codechef_data()
     at = fetch_atcoder_data()
 
+    seen_keys = set()
     all_upcoming = []
-    all_upcoming.extend(lc.get("upcoming_contests", []))
-    all_upcoming.extend(cf.get("upcoming_contests", []))
-    all_upcoming.extend(cc.get("upcoming_contests", []))
-    all_upcoming.extend(cc.get("live_contests", []))
-    all_upcoming.extend(at.get("upcoming_contests", []))
-    all_upcoming.extend(at.get("live_contests", []))
+
+    def add_unique(contests):
+        for c in contests:
+            key = f"{c.get('platform')}_{c.get('id') or c.get('name')}"
+            if key not in seen_keys:
+                seen_keys.add(key)
+                all_upcoming.append(c)
+
+    add_unique(lc.get("upcoming_contests", []))
+    add_unique(cf.get("upcoming_contests", []))
+    add_unique(cc.get("live_contests", []))
+    add_unique(cc.get("upcoming_contests", []))
+    add_unique(at.get("live_contests", []))
+    add_unique(at.get("upcoming_contests", []))
+
+    def get_sort_key(c):
+        st = c.get("startTime")
+        if isinstance(st, (int, float)):
+            return st
+        if isinstance(st, str):
+            try:
+                dt = datetime.fromisoformat(st.replace("Z", "+00:00"))
+                return int(dt.timestamp())
+            except Exception:
+                pass
+        return 0
+
+    all_upcoming.sort(key=get_sort_key)
 
     return {
         "status": "success",
@@ -507,3 +596,10 @@ async def get_all_contests():
         "codechef": cc,
         "atcoder": at
     }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)

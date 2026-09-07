@@ -7,18 +7,23 @@ const BACKEND_URLS = [
   "https://nextcontest-1.onrender.com"
 ].filter(Boolean);
 
-async function requestWithFallback(endpoint) {
+async function requestWithFallback(endpoint, options = {}) {
   let lastError = null;
 
   for (const baseUrl of BACKEND_URLS) {
     try {
       const url = `${baseUrl.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`;
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const timeoutId = setTimeout(() => controller.abort(), options.timeout || 12000);
 
       const res = await fetch(url, {
+        ...options,
         signal: controller.signal,
-        headers: { Accept: "application/json" }
+        headers: {
+          Accept: "application/json",
+          ...(options.body ? { "Content-Type": "application/json" } : {}),
+          ...(options.headers || {})
+        }
       });
       clearTimeout(timeoutId);
 
@@ -387,3 +392,52 @@ export async function fetchAllPlatforms() {
 
   return { upcoming, past, live };
 }
+
+/**
+ * Fetch problem metadata statistics (total, easy, medium, hard, free, paid, tags)
+ */
+export async function fetchProblemStats() {
+  return await requestWithFallback('leetcode/problems/stats');
+}
+
+/**
+ * Filter & search problems from local database
+ */
+export async function searchProblems(params = {}) {
+  const query = new URLSearchParams(params).toString();
+  const endpoint = query ? `leetcode/problems/search?${query}` : 'leetcode/problems/search';
+  return await requestWithFallback(endpoint);
+}
+
+/**
+ * Fetch end-to-end personalized contest for a LeetCode username
+ */
+export async function fetchPersonalizedContest(username, seed = null) {
+  const query = seed ? `?seed=${encodeURIComponent(seed)}` : '';
+  return await requestWithFallback(`leetcode/${username}/personalized-contest${query}`);
+}
+
+/**
+ * Deterministically generate a personalized contest from profile & AI coach analysis
+ */
+export async function generatePersonalizedContest(payload) {
+  return await requestWithFallback('leetcode/personalized-contest', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}
+
+/**
+ * Fetch AI CP coach analysis for a LeetCode user
+ */
+export async function fetchAIAnalysis(username) {
+  return await requestWithFallback(`leetcode/${encodeURIComponent(username)}/ai-analysis`);
+}
+
+/**
+ * Fetch full profile analysis for a LeetCode user
+ */
+export async function fetchUserProfile(username) {
+  return await requestWithFallback(`leetcode/${encodeURIComponent(username)}/analysis`);
+}
+
