@@ -147,3 +147,81 @@ def test_rule_based_fallback():
 def test_leetcode_user_not_found():
     response = client.get("/leetcode/this_user_definitely_does_not_exist_xyz123")
     assert response.status_code in [404, 400]
+
+
+def test_analyzer_unique_solved_problems_count():
+    # User solved 42 unique problems, but tags sum to 150 and submissions sum to 120
+    skills_with_stats = {
+        "matchedUser": {
+            "tagProblemCounts": {
+                "fundamental": [
+                    {"tagName": "Array", "tagSlug": "array", "problemsSolved": 40},
+                    {"tagName": "Hash Table", "tagSlug": "hash-table", "problemsSolved": 35}
+                ],
+                "intermediate": [
+                    {"tagName": "Dynamic Programming", "tagSlug": "dynamic-programming", "problemsSolved": 45},
+                    {"tagName": "Binary Search", "tagSlug": "binary-search", "problemsSolved": 30}
+                ],
+                "advanced": []
+            },
+            "submitStatsGlobal": {
+                "acSubmissionNum": [
+                    {"difficulty": "All", "count": 42, "submissions": 120},
+                    {"difficulty": "Easy", "count": 15, "submissions": 40},
+                    {"difficulty": "Medium", "count": 22, "submissions": 65},
+                    {"difficulty": "Hard", "count": 5, "submissions": 15}
+                ],
+                "totalSubmissionNum": [
+                    {"difficulty": "All", "count": 42, "submissions": 300}
+                ]
+            }
+        }
+    }
+
+    analyzed = analyze_skills(skills_with_stats)
+    # Must equal the unique solved problems count (42), not tag sum (150) or attempts/submissions (120/300)
+    assert analyzed["total_solved"] == 42
+
+    profile = create_user_profile(skills_with_stats, None, None, username="uniquetest")
+    assert profile["total_solved"] == 42
+    assert profile["total_problems_solved"] == 42
+
+
+def test_duplicate_submissions_do_not_increase_count():
+    # A user who solved 1 problem with 20 repeat submissions
+    skills_data = {
+        "matchedUser": {
+            "tagProblemCounts": {
+                "fundamental": [{"tagName": "Array", "tagSlug": "array", "problemsSolved": 1}],
+                "intermediate": [],
+                "advanced": []
+            },
+            "submitStatsGlobal": {
+                "acSubmissionNum": [
+                    {"difficulty": "All", "count": 1, "submissions": 20},
+                    {"difficulty": "Easy", "count": 1, "submissions": 20}
+                ]
+            }
+        }
+    }
+
+    analyzed = analyze_skills(skills_data)
+    assert analyzed["total_solved"] == 1
+
+
+def test_analyzer_difficulty_breakdown_fallback():
+    # If "All" difficulty entry is missing, sum the individual unique difficulty counts
+    skills_data = {
+        "matchedUser": {
+            "submitStatsGlobal": {
+                "acSubmissionNum": [
+                    {"difficulty": "Easy", "count": 10, "submissions": 25},
+                    {"difficulty": "Medium", "count": 20, "submissions": 50},
+                    {"difficulty": "Hard", "count": 5, "submissions": 15}
+                ]
+            }
+        }
+    }
+
+    analyzed = analyze_skills(skills_data)
+    assert analyzed["total_solved"] == 35

@@ -50,6 +50,12 @@ query skillStats($username: String!) {
         problemsSolved
       }
     }
+    submitStatsGlobal {
+      acSubmissionNum {
+        difficulty
+        count
+      }
+    }
   }
 }
 """

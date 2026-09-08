@@ -59,7 +59,41 @@ def analyze_skills(skill_data: Optional[Dict[str, Any]]) -> Dict[str, Any]:
                 seen_tags[name] = entry
                 all_tags.append(entry)
 
-    total_solved = sum(t["solved"] for t in all_tags)
+    # Extract unique problems solved from submitStatsGlobal / submitStats acSubmissionNum
+    total_solved = None
+    submit_stats = (
+        matched_user.get("submitStatsGlobal")
+        or matched_user.get("submitStats")
+        or (skill_data.get("submitStatsGlobal") if isinstance(skill_data, dict) else None)
+        or (skill_data.get("submitStats") if isinstance(skill_data, dict) else None)
+    )
+
+    if isinstance(submit_stats, dict):
+        ac_submissions = submit_stats.get("acSubmissionNum") or []
+        for item in ac_submissions:
+            if isinstance(item, dict) and str(item.get("difficulty", "")).lower() == "all":
+                if item.get("count") is not None:
+                    try:
+                        total_solved = int(item["count"])
+                        break
+                    except (ValueError, TypeError):
+                        pass
+
+        if total_solved is None and ac_submissions:
+            diff_counts = []
+            for item in ac_submissions:
+                if isinstance(item, dict) and str(item.get("difficulty", "")).lower() != "all":
+                    if item.get("count") is not None:
+                        try:
+                            diff_counts.append(int(item["count"]))
+                        except (ValueError, TypeError):
+                            pass
+            if diff_counts:
+                total_solved = sum(diff_counts)
+
+    # Fallback to sum of tags only if submitStats is not available
+    if total_solved is None:
+        total_solved = sum(t["solved"] for t in all_tags)
 
     # Sort ascending for weak topics (fewest solved)
     all_tags.sort(key=lambda x: x["solved"])

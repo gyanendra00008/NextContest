@@ -32,4 +32,6 @@ __pycache__/
 env/
 venv/
 .pytest_cache/
-
+*.db-journal
+*.db-wal
+*.db-shm

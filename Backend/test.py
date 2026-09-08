@@ -20,6 +20,14 @@ sample_skills = {
                 {"tagName": "Graph", "tagSlug": "graph", "problemsSolved": 3},
                 {"tagName": "Segment Tree", "tagSlug": "segment-tree", "problemsSolved": 0}
             ]
+        },
+        "submitStatsGlobal": {
+            "acSubmissionNum": [
+                {"difficulty": "All", "count": 110, "submissions": 250},
+                {"difficulty": "Easy", "count": 60, "submissions": 120},
+                {"difficulty": "Medium", "count": 40, "submissions": 100},
+                {"difficulty": "Hard", "count": 10, "submissions": 30}
+            ]
         }
     }
 }

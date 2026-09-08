@@ -4,7 +4,12 @@ const UserProfileDashboard = ({ profile }) => {
   if (!profile) return null;
 
   const rating = profile.contest_rating ?? 'Unrated';
-  const totalSolved = profile.total_problems_solved ?? profile.total_solved ?? 0;
+  const totalSolved =
+    profile.total_problems_solved ??
+    profile.total_solved ??
+    (profile.submitStatsGlobal?.acSubmissionNum?.find(s => s.difficulty?.toLowerCase() === 'all')?.count) ??
+    (profile.submitStats?.acSubmissionNum?.find(s => s.difficulty?.toLowerCase() === 'all')?.count) ??
+    0;
   const level = profile.contest_level ?? profile.rating_level ?? 'Beginner';
   const contestsAttended = profile.contests_attended ?? 0;
 
